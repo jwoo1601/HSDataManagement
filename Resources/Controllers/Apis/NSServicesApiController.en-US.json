@@ -1,0 +1,10 @@
+{
+  "service.notFound": "No matching service found.",
+  "serviceGroup.notFound": "No matching service group found.",
+
+  "service.dbFailure": "An error occured while saving service data.",
+  "serviceGroup.dbFailure": "An error occured while saving service group data.",
+
+  "service.deleteFailure": "An error occured while deleting service data.",
+  "serviceGroup.deleteFailure": "An error occured while deleting service group data.",
+}

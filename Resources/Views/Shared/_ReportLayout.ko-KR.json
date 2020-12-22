@@ -1,0 +1,14 @@
+﻿{
+  "name.monthlyPlan": "영양지원과 월간 계획표",
+  "name.weeklyMenu": "주간 식단표",
+  "name.cookingPlan": "조리 계획서",
+  "name.operationLog": "급식운영일지",
+  "name.inspectionLog": "검식·보존식 기록대장",
+  "name.foodSafetyTrainingLog": "위생안전교육 일지",
+  "name.gasInspectionLog": "가스안전점검 일지",
+
+  "name.licenseStatus": "보건증 현황표",
+  "name.weeklyMenuDisplay": "식단게시",
+  "name.preservationLog": "보존식 기록표",
+  "name.satisfactionSurvey": "만족도 및 기호도 조사 결과"
+}

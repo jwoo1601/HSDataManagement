@@ -1,0 +1,8 @@
+{
+  "date.invalid": "Invalid date format.",
+
+  "report.generateError": "An error occured while generating report.",
+  "operationLog.generateError": "An error occured while generating operation log.",
+
+  "fileName.operationLog": "OperationLog_{0}"
+}

@@ -1,0 +1,22 @@
+@import "./bootstrap.hsm.scss";
+@import "./fonts.hsm.scss";
+
+.navbar-brand.hsm {
+  white-space: normal;
+  text-align: center;
+  word-break: break-all;
+}
+
+.nav-item.hsm .nav-link {
+  font-weight: 700 !important;
+  color: var(--white) !important;
+}
+
+// @each $color, $value in $theme-colors {
+//   .btn-#{$color}.hsm-contrast {
+//       &:hover {
+//           color: color-yiq($color);
+//           background-color: color-yiq()
+//       }
+//   }
+// }

@@ -1,0 +1,146 @@
+﻿@model CustomerViewModel
+
+@{
+    var numPages = (int)Math.Ceiling((double)Model.NumCustomers / Model.NumItemsPerPage);
+}
+
+@Html.PartialSection("Scripts", @<script src="~/js/customer/customer.js"></script>)
+
+<div class="container">
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="h3 border-bottom pb-2">
+                고객관리
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2 px-2">
+        <div class="col-6 offset-1 mr-3">
+            <form class="form-inline" name="searchForm">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <span id="numCustomers" class="badge badge-pill badge-primary d-inline-block mr-2">
+                            @Model.NumCustomers
+                        </span>
+                        <select class="custom-select">
+                            <option value="number">고객번호</option>
+                            <option value="name">이름</option>
+                        </select>
+                    </div>
+                    <div class="col-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text bg-success text-white">
+                                    <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <input type="search" class="form-control" placeholder="검색 필터" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-1 offset-1 pl-md-5 pr-md-0 mr-1">
+            <button id="reloadBtn" class="btn btn-outline-submain">
+                <span class="btn-icon oi oi-reload" aria-hidden="true"></span>
+            </button>
+        </div>
+        <div class="col-2">
+            <button id="addCustomerBtn" class="btn btn-info">
+                <span class="btn-icon oi oi-plus" aria-hidden="true"></span>
+                <span class="d-none d-md-inline ml-2">고객 추가</span>
+            </button>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-10 offset-1">
+            <div class="table-responsive">
+                <table id="customerTable" class="table table-hover text-center vertical-center">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">고객번호</th>
+                            <th scope="col">성명</th>
+                            <th scope="col">숨김/보임</th>
+                            <th scope="col">동작</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Async fetched -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 justify-content-center">
+        <div class="col-auto">
+            <div class="dropdown">
+                <button class="btn btn-submain dropdown-toggle" type="button"
+                        id="sortingSettingsDropdownBtn" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    <span class="btn-icon oi oi-wrench" aria-hidden="true"></span>
+                    <span class="d-none d-md-inline">설정</span>
+                </button>
+                <form class="form dropdown-menu px-4 pt-3 pb-2" name="sortingSettings">
+                    <input type="hidden" name="pageNumber" value="1" />
+                    <div class="form-group">
+                        <label for="numItems">항목 수</label>
+                        <input type="text" name="numItems" class="form-control numeric-only"
+                               value="@Model.NumItemsPerPage" />
+                    </div>
+                    <div class="form-group">
+                        <label for="sortingCriteria">정렬 기준</label>
+                        <select class="custom-select" name="sortingCriteria">
+                            <option value="number">고객번호</option>
+                            <option value="name">이름</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="sortingOrder">정렬 순서</label>
+                        <select class="custom-select" name="sortingOrder">
+                            <option value="ascending">오름차순</option>
+                            <option value="descending">내림차순</option>
+                        </select>
+                    </div>
+                    <div class="form-group mt-4">
+                        <a class="btn btn-primary w-100" data-action="save">저장</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="col-auto">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a class="page-link" aria-label="Previous" id="pagePrev">
+                        <span class="oi oi-chevron-left" aria-hidden="true"></span>
+                    </a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" data-page="1">1</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" aria-label="Next" id="pageNext">
+                        <span class="oi oi-chevron-right" aria-hidden="true"></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<partial name="_CustomerDetailModal"
+         model='new ModalViewModel
+{
+    Id = "addCustomerModal",
+    Title = "새 고객 추가",
+    FormName = "addCustomer",
+    TriggerAction = "form-reset"
+}.Attribute("add")' />
+
+<partial name="_CustomerDetailModal"
+         model='new ModalViewModel
+{
+    Id = "editCustomerModal",
+    Title = "고객 정보 수정",
+    FormName = "editCustomer"
+}.Attribute("edit")' />

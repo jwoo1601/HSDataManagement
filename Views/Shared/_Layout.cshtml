@@ -1,0 +1,153 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Microsoft.AspNetCore.Authentication
+@inject UserManager<HSMUser> UserManager
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>효성제일건강센터 데이터 관리 시스템 - @ViewData["Title"]</title>
+    <!-- Internal Libraries-->
+    <link rel="stylesheet" href="~/lib/jquery-ui/jquery-ui.min.css" />
+    <link rel="stylesheet" href="~/css/bootstrap.custom.min.css" />
+    <link href="~/open-iconic/font/css/open-iconic.min.css" rel="stylesheet" />
+    <link href="~/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/css/theme.css" />
+
+    <!-- External CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+</head>
+<body>
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-submain border-bottom box-shadow mb-3">
+            <div class="container">
+                <a class="navbar-brand" href="/">
+                    <span class="badge badge-light text-main">
+                        효성
+                        <span class="d-none d-md-inline">제일건강센터</span>
+                    </span>
+                    <span class="ml-2">데이터 관리 시스템</span>
+                </a>
+                <button class="navbar-toggler" type="button"
+                        data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse ml-4">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link hm" href="/customer">고객관리</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hm" href="/nutrition-support">영양지원과</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hm" href="/report">리포트</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link hm" href="/dashboard">대시보드</a>
+                        </li>
+                    </ul>
+                </div>
+                <form class="form-inline">
+                    @if (User?.Identity.IsAuthenticated == true)
+                    {
+                        var currentUser = await UserManager.GetUserAsync(User);
+                        var role = currentUser.Roles.FirstOrDefault()?.Role;
+
+                        <div class="dropdown">
+                            <button type="button" class="btn btn-light text-main ml-3 font-weight-bold"
+                                    id="profileBtn">
+                                <span class="btn-icon oi oi-person" aria-hidden="true"></span>
+                                <span>@currentUser.UserName</span>
+                            </button>
+                            <button type="button" class="btn btn-light text-main dropdown-toggle dropdown-toggle-split"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="sr-only">Toggle Dropdown</span>
+                            </button>
+
+                            <div class="dropdown-menu" aria-labelledby="profileBtn">
+                                <a class="dropdown-item" href="#">@(role?.Name ?? "Unverified Account")</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item text-danger"
+                                   href="/logout">
+                                    로그아웃
+                                </a>
+                                @if (!currentUser.EmailConfirmed)
+                                {
+                                    <a class="dropdown-item"
+                                       href="/account/confirm-email/resend">
+                                        인증 이메일 재요청
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm bg-submain ml-3 mr-2 font-weight-bold text-white hover-text-submain hover-bg-white" type="button"
+                                id="loginBtn">
+                            <span class="btn-icon oi oi-account-login" aria-hidden="true"></span>
+                            <span>로그인</span>
+                        </button>
+                        <button class="btn btn-sm bg-submain font-weight-bold text-white hover-text-submain hover-bg-white" type="button"
+                                id="registerBtn">
+                            <span class="btn-icon oi oi-document" aria-hidden="true"></span>
+                            <span>회원가입</span>
+                        </button>
+                    }
+                </form>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            <div class="display-4">@(await Context.GetTokenAsync("access_token"))</div>
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2020 - HyosungManagement
+        </div>
+    </footer>
+
+    <partial name="_LoginModal" />
+    <partial name="_LoadingModal" />
+    <partial name="_ConfirmationModal" />
+    <partial name="_ErrorModal" />
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/popper.js/umd/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <!--moment.js-->
+    <script src="~/lib/moment.js//moment-with-locales.min.js"></script>
+    <script src="~/lib/moment.js//locale/en-ca.min.js"></script>
+    <script src="~/lib/moment.js//locale/ko.min.js"></script>
+    <script src="~/lib/koreanCardinalOrdinal/fmt.ordinal.js"></script>
+
+    <environment include="Development">
+        <script src="~/js/core.hm.js"></script>
+        <!--APIs-->
+        <script src="~/js/api/api.hm.js"></script>
+        <!--jQuery Extensions-->
+        <script src="~/js/extensions/jquery.hm.table.js"></script>
+        <script src="~/js/extensions//jquery.hm.form.js"></script>
+        <!--Event Bindings-->
+        <script src="~/js/globalEventBindings.js"></script>
+    </environment>
+
+    <environment include="Production">
+        <script src="~/js/minified/hm.min.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("Scripts", required: false)
+    @Html.RenderPartialSection("Scripts")
+</body>
+</html>

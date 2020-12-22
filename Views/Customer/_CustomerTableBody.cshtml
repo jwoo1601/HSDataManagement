@@ -1,0 +1,38 @@
+﻿@model CustomerTableBodyViewModel
+
+@{
+    var displayedCustomers = Model.Customers
+                                    .Skip((Model.Page - 1) * Model.NumItemsPerPage)
+                                    .Take(Model.NumItemsPerPage);
+}
+
+@foreach (var customer in displayedCustomers)
+{
+    var tags = string.Join(",", Model.CustomerTags[customer.ID].Select(t => t.Name));
+    var visibility = (!customer.IsHidden).ToString().ToLowerInvariant();
+
+    <tr data-customer-id="@customer.ID" data-visibility="@visibility">
+        <th scope="row" data-category="number">@customer.ID</th>
+        <td data-category="name">@customer.Name</td>
+        <td data-category="visibility">
+            <input type="checkbox" name="visibility" class="form-check-inline" disabled
+                   @(customer.IsHidden ? "" : "checked=\"checked\"") />
+        </td>
+        <td>
+            <div>
+                <button data-action="edit" type="button" class="btn btn-sm btn-outline-primary mr-md-2 d-block d-md-inline-block">
+                    <span class="oi oi-pencil mr-1" aria-hidden="true"></span>
+                    <span class="btn-text">수정</span>
+                </button>
+                <button data-action="visibility" type="button" class="btn btn-sm btn-outline-secondary mr-md-2 d-block d-md-inline-block">
+                    <span class="oi oi-contrast mr-1" aria-hidden="true"></span>
+                    <span class="btn-text">@(customer.IsHidden ? "보임" : "숨김")</span>
+                </button>
+                <button data-action="delete" type="button" class="btn btn-sm btn-outline-danger d-block d-md-inline-block">
+                    <span class="oi oi-x mr-1" aria-hidden="true"></span>
+                    <span class="btn-text">제거</span>
+                </button>
+            </div>
+        </td>
+    </tr>
+}

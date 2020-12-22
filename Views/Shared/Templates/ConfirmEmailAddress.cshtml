@@ -1,0 +1,46 @@
+﻿@inject IViewLocalizer Localizer
+@inject IConfiguration Configuration
+@inject IWebHostEnvironment HostEnvironment
+@model ConfirmEmailAddressViewModel
+
+@{
+    Layout = "_EmailLayout";
+
+    string confirmEmailUrl = null;
+    if (HostEnvironment.IsDevelopment())
+    {
+        confirmEmailUrl = Url.RouteUrl(
+            "ConfirmEmail",
+            new { confirmation_code = Model.ConfirmationCode },
+            "http",
+            $"{Configuration["Host:BaseUrl"]}:{Configuration["Host:Port"]}"
+        );
+    }
+    else
+    {
+        confirmEmailUrl = Url.RouteUrl("ConfirmEmail", new { confirmation_code = Model.ConfirmationCode });
+    }
+}
+
+<div style="color: #6c757d; font-size: 80%;">
+    @Localizer["WelcomeText", Model.Username]
+</div>
+<div style="margin: 0.5rem 0 0 0;">
+    @Localizer["WelcomeText2"]
+</div>
+<div style="margin: 0.5rem 0 0 0;">
+    @Localizer["WelcomeText3"]
+</div>
+
+<div style="text-align: center; margin: 3rem 0 0 0;">
+    <div style="font-size: 1.75rem; font-weight: 700;">
+        @Localizer["Title"]
+    </div>
+    <div style="font-size: 1rem; color: #6c757d; margin: 0.5rem 0 1rem 0; font-weight: 500; line-height: 1.2;">
+        @Localizer["Subtitle"]
+    </div>
+    <a href="@confirmEmailUrl"
+       style="text-decoration: none; display: inline-block; text-align: center; vertical-align: middle; cursor: pointer; padding: 0.5rem 1rem 0.5rem 1rem; font-size: 1.25rem; font-weight: 700; line-height: 1.5; border-radius: 0.3rem; background-color: #28a745; color: #f8f9fa; border-color: #28a745;">
+        @Localizer["ButtonText"]
+    </a>
+</div>

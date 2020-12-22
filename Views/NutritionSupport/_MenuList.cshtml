@@ -1,0 +1,53 @@
+﻿@Html.PartialSection("Scripts", @<script src="~/js/nutrition-support/menuList.js"></script>)
+
+<div class="row justify-content-between px-4">
+    <div class="col-auto">
+        <ul class="nav nav-pills nav-pills-theme-1" id="menuListTabBar" role="tablist" aria-orientation="horizontal">
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" role="tab" href="#menuListTabContentFood"
+                   id="menuListTabFood" data-category="food">
+                    <span class="btn-icon oi oi-book"></span>
+                    <span>메뉴</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" role="tab" href="#menuListTabContentCategory"
+                   id="menuListTabCategory" data-category="category">
+                    <span class="btn-icon oi oi-menu"></span>
+                    <span>카테고리</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="pill" role="tab" href="#menuListTabContentIngredient"
+                   id="menuListTabIngredient" data-category="ingredient">
+                    <span class="btn-icon oi oi-cart"></span>
+                    <span>재료</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-auto" data-category="menuList">
+        <button class="btn btn-outline-submain mr-2" data-action="reload">
+            <span class="btn-icon oi oi-reload" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-info" data-action="add">
+            <span class="btn-icon oi oi-plus" aria-hidden="true"></span>
+            <span class="d-none d-md-inline ml-2">추가</span>
+        </button>
+    </div>
+</div>
+<div class="row mt-3 px-3 py-2 border-top">
+    <div class="col">
+        <div class="tab-content" id="menuListTabContent">
+            <div class="tab-pane" id="menuListTabContentFood" data-category="food">
+                <partial name="_FoodList" />
+            </div>
+            <div class="tab-pane" id="menuListTabContentCategory" data-category="category">
+                <partial name="_FoodCategoryList" />
+            </div>
+            <div class="tab-pane" id="menuListTabContentIngredient" data-category="ingredient">
+                <partial name="_FoodIngredientList" />
+            </div>
+        </div>
+    </div>
+</div>

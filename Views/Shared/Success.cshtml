@@ -1,0 +1,31 @@
+﻿@inject IViewLocalizer Localizer
+@model SuccessViewModel
+
+<div class="row mt-5 mb-5">
+    <div class="col-10 offset-1">
+        <div class="h3 font-weight-bold text-success">
+            <span class="btn-icon-always oi oi-bullhorn"></span>
+            <span>
+                @Model.Title
+            </span>
+        </div>
+        <div class="small mt-4 mx-2">
+            @Model.Message
+        </div>
+    </div> <!--col-->
+</div> <!--row-->
+
+@section Scripts {
+    @if (Model.EnableAutoRedirection)
+    {
+        <script>
+            $(function () {
+                var timeoutHandle = setTimeout(() => {
+                    clearTimeout(timeoutHandle);
+
+                    window.location.href = "@Model.AutoRedirectionUrl";
+                }, @((int)Model.AutoRedirectionDelay.TotalMilliseconds));
+            });
+        </script>
+    }
+}

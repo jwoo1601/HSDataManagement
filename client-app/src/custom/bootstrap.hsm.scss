@@ -1,0 +1,197 @@
+﻿$theme-colors: (
+  "main": #6610f2,
+  "submain": #6f42c1,
+  "transparent": transparent,
+);
+
+$enable-shadows: true;
+
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~bootstrap-vue/src/index.scss";
+
+@mixin define-effects($type, $selector, $color-map) {
+  @each $color, $value in $color-map {
+    .#{$type}-text-#{$color}#{$selector} {
+      color: $value !important;
+    }
+
+    .#{$type}-bg-#{$color}#{$selector} {
+      background-color: $value !important;
+    }
+
+    .#{$type}-text-#{$color}#{$selector} {
+      color: $value !important;
+    }
+
+    .#{$type}-bg-#{$color}#{$selector} {
+      background-color: $value !important;
+    }
+
+    .#{$type}-border-#{$color}#{$selector} {
+      border-style: solid;
+      border-color: $value !important;
+    }
+
+    .#{$type}-bt-#{$color}#{$selector} {
+      border-top-style: solid;
+      border-top-color: $value !important;
+    }
+
+    .#{$type}-bl-#{$color}#{$selector} {
+      border-left-style: solid;
+      border-left-color: $value !important;
+    }
+
+    .#{$type}-bb-#{$color}#{$selector} {
+      border-bottom-style: solid;
+      border-bottom-color: $value !important;
+    }
+
+    .#{$type}-br-#{$color}#{$selector} {
+      border-right-style: solid;
+      border-right-color: $value !important;
+    }
+  }
+}
+
+@each $size, $length in $spacers {
+  .border-#{$size} {
+    border-width: $border-width * $size !important;
+  }
+}
+
+.border-show {
+  border-style: solid;
+}
+
+.hoverable {
+  cursor: pointer !important;
+}
+
+table.vertical-center tr {
+  th,
+  td {
+    vertical-align: middle;
+  }
+}
+
+.table-selectable tbody {
+  tr.selected,
+  tr:hover {
+    @extend .hoverable;
+  }
+
+  tr.selected {
+    background-color: var(--warning);
+  }
+
+  tr:hover {
+    background-color: var(--orange);
+  }
+}
+
+body {
+  @include define-effects("hover", ":hover", $theme-colors);
+  @include define-effects("hover", ":hover", $colors);
+  @include define-effects("active", ".active", $theme-colors);
+  @include define-effects("active", ".active", $colors);
+}
+
+.btn-icon {
+  vertical-align: text-top !important;
+}
+
+.btn-icon + span {
+  @extend .d-none;
+  @extend .d-md-inline;
+  @extend .ml-2;
+}
+
+.nav-link.hm {
+  @extend .text-white;
+  @extend .font-weight-bold;
+  @extend .border-transparent;
+  @extend .border-bottom;
+  @extend .border-2;
+  @extend .hover-bb-white;
+}
+
+.custom-tag-container {
+  @extend .d-flex;
+  @extend .flex-row;
+  @extend .flex-wrap;
+  @extend .justify-content-start;
+  @extend .align-items-start;
+}
+
+.custom-tag {
+  @extend .d-inline-block;
+  @extend .border;
+  @extend .border-2;
+  @extend .border-submain;
+  @extend .rounded-pill;
+  @extend .px-3;
+  @extend .py-1;
+  @extend .mr-2;
+  @extend .mb-1;
+  @extend .text-submain;
+  @extend .font-weight-bold;
+  @extend .hoverable;
+  @extend .shadow-sm;
+
+  &:hover {
+    background-color: var(--submain) !important;
+    color: var(--white) !important;
+
+    .custom-tag-text,
+    .custom-tag-remove {
+      color: var(--white) !important;
+    }
+  }
+
+  .custom-tag-remove {
+    @extend .small;
+    vertical-align: text-top !important;
+  }
+}
+
+.add-custom-tag {
+  @extend .custom-tag;
+  @extend .bg-submain;
+  @extend .text-white;
+
+  .custom-tag-text {
+    @extend .text-white;
+  }
+
+  &:hover {
+    background-color: var(--white) !important;
+
+    .custom-tag-text,
+    .btn-icon {
+      color: var(--submain) !important;
+    }
+  }
+}
+
+.nav-pills-theme-1 {
+  .nav-item:not(:last-child) {
+    @extend .mr-3;
+  }
+
+  .nav-link {
+    &:hover,
+    &.active {
+      color: var(--white) !important;
+      background-color: var(--submain) !important;
+    }
+
+    &.active {
+      @extend .font-weight-bold;
+    }
+
+    color: var(--submain);
+    @extend .border;
+    @extend .border-submain;
+  }
+}

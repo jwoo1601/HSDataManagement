@@ -1,0 +1,119 @@
+﻿@model ServiceListViewModel
+
+@{
+    var serviceGroups = Model.Services
+                            .GroupBy(s => s.Group.ID);
+}
+
+@Html.PartialSection("Scripts", @<script src="~/js/nutrition-support/serviceList.js"></script>)
+
+<div class="container">
+    <div class="row border-bottom pb-3">
+        <div class="col-auto offset-md-6">
+            <form class="form-inline" name="searchForm">
+                <div class="form-row">
+                    <div class="col-auto">
+                        <select class="custom-select">
+                            <option value="number">연번</option>
+                            <option value="name">이름</option>
+                            <option value="category">구분</option>
+                            <option value="duration">시간</option>
+                        </select>
+                    </div>
+                    <div class="col-6 col-md-auto">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text bg-success text-white">
+                                    <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                                </div>
+                            </div>
+                            <input type="search" class="form-control" placeholder="서비스 검색" />
+                        </div>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-outline-success" role="button">검색</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-3 border-right">
+            <button id="addServiceBtn" class="btn btn-info mb-2">
+                <span class="oi oi-plus mr-2" style="line-height: 20px;" aria-hidden="true"></span>
+                서비스 추가
+            </button>
+
+            @foreach (var group in serviceGroups)
+            {
+                var groupName = group.FirstOrDefault()?.Group.Name;
+
+                <div class="mt-3">
+                    <button id="group@(group.Key)CollapseBtn" class="btn btn-outline-success" role="button"
+                            data-toggle="collapse" data-target="#group@(group.Key)List"
+                            aria-expanded="true" aria-controls="group@(group.Key)List">
+                        <span class="oi oi-plus mr-2" style="line-height: 20px;" aria-hidden="true"></span>
+                        @groupName
+                    </button>
+
+                    <div class="collapse nav flex-column nav-pills rounded mt-2 ml-2" id="group@(group.Key)List"
+                         role="tablist" aria-orientation="vertical">
+                        @foreach (var service in group)
+                        {
+                            var serviceIdentifier = $"Service{service.ID}";
+
+                            <a class="nav-link" id="tab@(serviceIdentifier)" data-toggle="pill"
+                               href="#tabContent@(serviceIdentifier)" role="tab" aria-controls="tabContent@(serviceIdentifier)"
+                               aria-selected="true"
+                               data-service-id="@service.ID">@service.Name</a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="col-9 px-4 py-2">
+            <div class="tab-content" id="tabContentServiceList">
+                @foreach (var service in Model.Services)
+                {
+                    var serviceIdentifier = $"Service{service.ID}";
+
+                    <div class="tab-pane" id="tabContent@(serviceIdentifier)">
+                        <form name="serviceDetailForm@(serviceIdentifier)">
+                            <div class="form-row">
+                                <div class="form-group col-3">
+                                    <label for="serviceNumber">연번</label>
+                                    <input type="text" class="form-control" name="serviceNumber" value="@service.ID" readonly />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-12">
+                                    <label for="name">서비스 이름</label>
+                                    <input type="text" class="form-control" name="name" value="@service.Name" />
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-9">
+                                    <label for="category">서비스 구분</label>
+                                    <input type="text" class="form-control" name="category" value="@service.Group.Name" />
+                                </div>
+                                <div class="form-group col-3">
+                                    <label for="duration">서비스 시간</label>
+                                    <input type="datetime" class="form-control" name="duration" value="@service.Duration?.TotalMinutes" />
+                                </div>
+                            </div>
+                            <div class="form-row mt-5">
+                                <div class="col-3 offset-6">
+                                    <button class="btn btn-success w-100" role="button">저장</button>
+                                </div>
+                                <div class="col-3">
+                                    <button class="btn btn-danger w-100" role="button">삭제</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

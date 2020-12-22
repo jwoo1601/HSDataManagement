@@ -1,0 +1,74 @@
+﻿@inject IViewLocalizer Localizer
+@inject IConfiguration Configuration
+
+@model ReportViewModel
+
+<!DOCTYPE html>
+<html lang="@ViewData["Locale"]">
+<head>
+    <meta charset="utf-8" />
+    <!-- Internal Libraries-->
+    <link href="~/open-iconic/font/css/open-iconic.min.css" rel="stylesheet" />
+    <link href="~/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Custom Stylesheets -->
+    <link rel="stylesheet" href="~/css/minified/hm.min.css" />
+
+    <!-- External CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row mt-2 pt-3 bg-light d-flex justify-content-between align-items-center">
+            <div class="col d-flex flex-column justify-content-between">
+                <div class="badge badge-main mx-auto">
+                    효성제일노인건강센터
+                </div>
+                <div class="h3 text-center mt-2">
+                    @Localizer[Model.ReportNameKey]
+                </div>
+            </div>
+            <div class="col">
+                <table class="table table-bordered text-center small">
+                    <thead class="thead-light">
+                        <tr>
+                            <th colspan="4" class="py-1">결제</th>
+                        </tr>
+                        <tr>
+                            <th scope="col" class="py-1">담당</th>
+                            <th scope="col" class="py-1">실장</th>
+                            <th scope="col" class="py-1">국장</th>
+                            <th scope="col" class="py-1">원장</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>전결</td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="row border-top d-flex justify-content-between">
+            <div class="col-auto small py-1">
+                @Model.LogDate.ToString("D")
+            </div>
+            <div class="col-auto small py-1">
+                [영양 &minus; @(string.Format("{0:yyMM}{1:D2}", Model.LogDate, Model.ReportTypeIdentifier))]
+            </div>
+        </div>
+        @RenderBody()
+        <div class="row border-top border-bottom d-flex justify-content-between">
+            <div class="col-auto small py-1">
+                발행일자: @DateTime.Now.ToString("D")
+            </div>
+            <div class="col-auto small py-1">
+                일련번호: @Model.ReportID.ToString("D")
+            </div>
+        </div>
+    </div>
+</body>
+</html>

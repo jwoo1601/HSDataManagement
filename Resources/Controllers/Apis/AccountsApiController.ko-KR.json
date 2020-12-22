@@ -1,0 +1,10 @@
+﻿{
+  "securityCode.notRegistered": "등록되지 않은 보안코드 입니다.",
+  "securityCode.invalid": "보안코드가 유효하지 않습니다.",
+  "securityCode.dbFailure": "보안코드를 처리중에 오류가 발생했습니다.",
+
+  "register.confirmEmail": "[효성제일건강센터 데이터관리] 이메일 주소를 확인해주세요",
+  "register.error": "회원가입 중에 오류가 발생했습니다.",
+  "register.success.title": "회원가입 성공",
+  "register.success.message": "효성제일건강센터 데이터 관리 시스템으로의 회원가입을 성공했습니다. 회원가입 절차를 완료하기 위해서는 이메일 주소 확인이 필요합니다. 자세한 사항은 이메일 {0} 을(를) 확인해주세요."
+}

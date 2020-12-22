@@ -1,0 +1,12 @@
+@import "~@kfonts/nanum-barun-gothic/index.css";
+
+html {
+  font-family: "NanumBarunGothic", Helvetica, Arial, sans-serif;
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}

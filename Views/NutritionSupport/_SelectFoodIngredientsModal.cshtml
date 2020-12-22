@@ -1,0 +1,138 @@
+﻿<div class="modal fade" id="selectFoodIngredientsModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <h3 class="modal-title">음식 재료 선택</h3>
+            </div>
+            <div class="modal-body">
+                <div class="row justify-content-center">
+                    <div class="col-auto">
+                        <h6 class="text-center">
+                            <span class="btn-icon oi oi-bullhorn mr-1"></span>
+                            <span>추가할 재료를 선택해주세요.</span>
+                        </h6>
+                    </div>
+                </div>
+                <div class="row mt-2 justify-content-between">
+                    <div class="col-auto">
+                        <form class="form-inline" name="searchSelectFoodIngredients"
+                              data-bind="table" data-target="#selectFoodIngredientsTable">
+                            <div class="form-row">
+                                <div class="col-auto">
+                                    <select class="custom-select" data-role="category">
+                                        <option value="id">번호</option>
+                                        <option value="name">이름</option>
+                                        <option value="origin">원산지</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <div class="input-group-text bg-success text-white">
+                                                <span class="oi oi-magnifying-glass" aria-hidden="true"></span>
+                                            </div>
+                                        </div>
+                                        <input type="search" class="form-control" placeholder="검색 필터" data-role="search-filter" data-action="filter" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-outline-submain" data-action="reload">
+                            <span class="btn-icon oi oi-reload" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col">
+                        <div class="table-responsive">
+                            <table id="selectFoodIngredientsTable" class="table table-hover table-selectable text-center vertical-center">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th scope="col" data-category="id">번호</th>
+                                        <th scope="col" data-category="name">이름</th>
+                                        <th scope="col" data-category="origin">원산지</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="sample-row d-none" data-sort="none">
+                                        <td scope="row"></td>
+                                        <td>
+                                            <a href="#" data-render-target></a>
+                                        </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 justify-content-center">
+                    <div class="col-auto">
+                        <div class="dropdown">
+                            <button class="btn btn-submain dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="btn-icon oi oi-wrench" aria-hidden="true"></span>
+                                @*<span class="d-none d-md-inline">설정</span>*@
+                            </button>
+
+                            <form class="form dropdown-menu px-4 pt-3 pb-2" name="tableOptions"
+                                  data-target="#selectFoodIngredientsTable">
+                                <div class="form-group">
+                                    <label for="numItems">항목 수</label>
+                                    <input type="text" name="numItems" class="form-control numeric-only"
+                                           value="10" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="criteria">정렬 기준</label>
+                                    <select class="custom-select" name="criteria">
+                                        <option value="id">번호</option>
+                                        <option value="name">이름</option>
+                                        <option value="origin">원산지</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="order">정렬 순서</label>
+                                    <select class="custom-select" name="order">
+                                        <option value="asc">오름차순</option>
+                                        <option value="desc">내림차순</option>
+                                    </select>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <a class="btn btn-primary w-100" data-action="save">저장</a>
+                                </div>
+                            </form>
+
+                        </div><!--dropdown-->
+                    </div><!--col-auto-->
+                    <div class="col-auto">
+                        <ul class="pagination tablePagination" data-target="#selectFoodIngredientsTable">
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Previous" data-action="prev">
+                                    <span class="oi oi-chevron-left" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                            <li class="page-item page-link">
+                                <span class="page-text badge badge-pill badge-primary d-inline-block p-1">
+                                </span>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" aria-label="Next" data-action="next">
+                                    <span class="oi oi-chevron-right" aria-hidden="true"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div><!--row-->
+            </div>
+            <div class="modal-footer justify-content-between">
+                <div class="d-inline-block message">
+                </div>
+                <div class="d-inline-block">
+                    <button type="button" class="btn btn-success" data-action="select">선택</button>
+                    <button type="button" class="btn btn-secondary" data-action="cancel">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

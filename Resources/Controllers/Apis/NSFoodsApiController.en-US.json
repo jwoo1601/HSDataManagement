@@ -1,0 +1,16 @@
+{
+  "food.notFound": "No matching food found.",
+  "foodCategory.notFound": "No matching food category found.",
+  "foodIngredient.notFound": "No matching food ingredient found.",
+  "foodIngredientCategory.notFound": "No matching food ingredient category found.",
+
+  "food.dbFailure": "An error occured while saving food data.",
+  "foodCategory.dbFailure": "An error occured while saving food category data.",
+  "foodIngredient.dbFailure": "An error occured while saving food ingredient data.",
+  "foodIngredientCategory.dbFailure": "An error occured while saving food ingredient category data.",
+
+  "food.deleteFailure": "An error occured while deleting food data.",
+  "foodCategory.deleteFailure": "An error occured while deleting food category data.",
+  "foodIngredient.deleteFailure": "An error occured while deleting food ingredient data.",
+  "foodIngredientCategory.deleteFailure": "An error occured while deleting food ingredient category data."
+}

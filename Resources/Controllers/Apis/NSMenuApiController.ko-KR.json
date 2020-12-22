@@ -1,0 +1,26 @@
+﻿{
+  "startDate.invalid": "유효하지 않은 시작 날짜 입니다.",
+  "endDate.invalid": "유요하지 않은 끝 날짜 입니다.",
+  "logType.invalid": "유효하지 않은 기록 타입입니다.",
+  "date.invalid": "유효하지 않은 날짜 입니다.",
+  "mealType.invalid": "유효하지 않은 식사 종류입니다.",
+  "mealCategory.invalid": "유효하지 않은 식사 분류입니다.",
+
+  "menu.duplicateError": "해당 날짜의 식단이 이미 존재합니다.",
+  "operationLog.duplicateError": "해당 날짜 및 식사 종류에 대한 운영 일지가 이미 존재합니다.",
+  "preservationLog.duplicateError": "해당 날짜, 식사 종류 및 분류에 대한 보존식 기록이 이미 존재합니다.",
+
+  "mealPackage.notFound": "해당 식단 패키지를 찾을 수 없습니다.",
+  "menu.notFound": "해당 날짜의 식단을 찾을 수 없습니다.",
+  "employeeRole.notFound": "해당 담당자를 찾을 수 없습니다.",
+  "operationLog.notFound": "해당 조건의 운영 일지를 찾을 수 없습니다.",
+  "preservationLog.notFound": "해당 조건의 보존식 기록을 찾을 수 없습니다.",
+
+  "menu.dbFailure": "일별 식단 데이터를 저장하는 중에 에러가 발생했습니다.",
+  "operationLog.dbFailure": "운영 일지 데이터를 저장하는 중에 에러가 발생했습니다.",
+  "preservationLog.dbFailure": "보존식 기록 데이터를 저장하는 중에 에러가 발생했습니다.",
+
+  "menu.deleteFailure": "일별 식단 데이터를 제거하는 중에 에러가 발생했습니다.",
+  "operationLog.deleteFailure": "운영 일지 데이터를 제거하는 중에 에러가 발생했습니다.",
+  "preservationLog.deleteFailure": "보존식 기록 데이터를 저장하는 중에 에러가 발생했습니다.",
+}

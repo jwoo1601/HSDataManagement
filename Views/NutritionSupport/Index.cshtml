@@ -1,0 +1,97 @@
+﻿@model NutritionSupportViewModel
+
+
+@Html.PartialSection("Scripts", @<script src="~/js/nutrition-support/nutritionSupport.js"></script>)
+
+<div class="container">
+    <div class="row">
+        <div class="col-10 offset-1">
+            <div class="h3 border-bottom pb-2">영양지원과</div>
+        </div>
+    </div>
+    <div class="row mt-3 px-2">
+        <div class="col-6 col-md-10 offset-3 offset-md-1">
+            <div id="tabDropdown" class="dropdown d-block d-md-none">
+                <button class="btn btn-main dropdown-toggle w-100" type="button" id="tabDropdownBtn"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    메뉴 선택
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownTabBtn">
+                    <a class="dropdown-item" href="#tabContentServiceList"
+                       id="dropdownBtnServiceList">서비스 관리</a>
+                    <a class="dropdown-item" href="#tabContentMenuList"
+                       id="dropdownBtnMenuList">메뉴 관리</a>
+                    <a class="dropdown-item disabled" href="#tabContentAssignedServices"
+                       id="dropdownBtnAssignedServices">입소자 서비스 현황</a>
+                    <a class="dropdown-item disabled" href="#tabContentLicenseDetails"
+                       id="dropdownBtnLicenseDetails">보건증 현황</a>
+                    <a class="dropdown-item disabled" href="#tabContentMonthlyPlanner"
+                       id="dropdownBtnMonthlyPlanner">월간 게획</a>
+                    <a class="dropdown-item" href="#tabContentWeeklyMenu"
+                       id="dropdownBtnWeeklyMenu">주간 식단표</a>
+                    <a class="dropdown-item" href="#tabContentDailyLog"
+                       id="dropdownBtnDailyLog">일지</a>
+                    <a class="dropdown-item disabled" href="#tabContentInspectionLog"
+                       id="dropdownBtnInspectionLog">검식</a>
+                    <a class="dropdown-item disabled" href="#tabContentPreservationLog"
+                       id="dropdownBtnPreservationLog">보존식</a>
+                </div>
+            </div>
+
+            <div class="nav flex-row nav-tabs d-none d-md-flex" id="tabBar" role="tablist" aria-orientation="horizontal">
+                <a class="nav-link active" id="tabServiceList" data-toggle="pill"
+                   href="#tabContentServiceList" role="tab" aria-controls="tabContentServiceList"
+                   aria-selected="true">서비스 관리</a>
+                <a class="nav-link" id="tabMenuList" data-toggle="pill"
+                   href="#tabContentMenuList" role="tab" aria-controls="tabContentMenuList"
+                   aria-selected="true">메뉴 관리</a>
+                <a class="nav-link disabled" id="tabAssignedServices" data-toggle="pill"
+                   href="#tabContentAssignedServices" role="tab" aria-controls="tabContentAssignedServices"
+                   aria-selected="false">입소자 서비스 현황</a>
+                <a class="nav-link disabled" id="tabLicenseDetails" data-toggle="pill"
+                   href="#tabContentLicenseDetails" role="tab" aria-controls="tabContentLicenseDetails"
+                   aria-selected="false">보건증 현황</a>
+                <a class="nav-link disabled" id="tabMonthlyPlanner" data-toggle="pill"
+                   href="#tabContentMonthlyPlanner" role="tab" aria-controls="tabContentMonthlyPlanner"
+                   aria-selected="false">월간 계획</a>
+                <a class="nav-link" id="tabWeeklyMenu" data-toggle="pill"
+                   href="#tabContentWeeklyMenu" role="tab" aria-controls="tabContentWeeklyMenu"
+                   aria-selected="false">주간 식단표</a>
+                <a class="nav-link" id="tabDailyLog" data-toggle="pill"
+                   href="#tabContentDailyLog" role="tab" aria-controls="tabContentDailyLog"
+                   aria-selected="false">일지</a>
+                <a class="nav-link disabled" id="tabInspectionLog" data-toggle="pill"
+                   href="#tabContentInspectionLog" role="tab" aria-controls="tabContentInspectionLog"
+                   aria-selected="false">검식</a>
+                <a class="nav-link disabled" id="tabPreservationLog" data-toggle="pill"
+                   href="#tabContentPreservationLog" role="tab" aria-controls="tabContentPreservationLog"
+                   aria-selected="false">보존식</a>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3 px-4">
+        <div class="col-10 offset-1">
+            <div class="tab-content" id="tabContent">
+                <div class="tab-pane show active" id="tabContentServiceList">
+                    <partial name="_ServiceList"
+                             model='new ServiceListViewModel
+                                    {
+                                        Services = Model.Services
+                                    }' />
+                </div>
+                <div class="tab-pane" id="tabContentMenuList">
+                    <partial name="_MenuList" />
+                </div>
+                <div class="tab-pane" id="tabContentAssignedServices">입소자 서비스 현황</div>
+                <div class="tab-pane" id="tabContentLicenseDetails">보건증 현황</div>
+                <div class="tab-pane" id="tabContentMonthlyPlanner">월간 계획</div>
+                <div class="tab-pane" id="tabContentWeeklyMenu">
+                    <partial name="_WeeklyMenu" />
+                </div>
+                <div class="tab-pane" id="tabContentDailyLog">일지</div>
+                <div class="tab-pane" id="tabContentInspectionLog">검식</div>
+                <div class="tab-pane" id="tabContentPreservationLog">보존식</div>
+            </div>
+        </div>
+    </div>
+</div>

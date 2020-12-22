@@ -1,0 +1,31 @@
+﻿@inject IViewLocalizer Localizer
+@model ErrorViewModel
+
+<div class="row mt-5 mb-5">
+    <div class="col-10 offset-1">
+        <div class="h3 font-weight-bold text-danger">
+            <span class="btn-icon-always oi oi-warning"></span>
+            <span>
+                @if (string.IsNullOrWhiteSpace(Model.Title))
+                {
+                    <text>@Localizer["title.default"]</text>
+                }
+                else
+                {
+                    <text>@Model.Title</text>
+                }
+            </span>
+        </div>
+        <div class="small mt-4 mx-2">
+            @Model.Message
+        </div>
+        @if (!string.IsNullOrWhiteSpace(Model.AdditionalLinkText))
+        {
+            <div class="small mt-2 mx-2">
+                <a href="@(Model.AdditionalLinkUrl ?? "/")">
+                    @Model.AdditionalLinkText
+                </a>
+            </div>
+        }
+    </div> <!--col-->
+</div> <!--row-->

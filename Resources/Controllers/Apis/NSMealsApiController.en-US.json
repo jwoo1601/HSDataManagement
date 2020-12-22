@@ -1,0 +1,10 @@
+{
+  "meal.notFound": "No matching meal found.",
+  "mealPackage.notFound": "No matching meal package found.",
+
+  "meal.dbFailure": "An error occured while saving meal data.",
+  "mealPackage.dbFailure": "An error occured while saving meal package data.",
+
+  "meal.deleteFailure": "An error occured while deleting meal data.",
+  "mealPackage.deleteFailure": "An error occured while deleting meal package data.",
+}

@@ -1,0 +1,57 @@
+﻿@using System.Globalization
+@inject IViewLocalizer Localizer
+@inject IConfiguration Configuration
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="@CultureInfo.CurrentUICulture.TwoLetterISOLanguageName">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- External CDNs -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/gh/moonspam/NanumBarunGothic@latest/nanumbarungothicsubset.css" />
+
+    <!-- Embedded styles -->
+    @RenderSection("Styles", required: false)
+    @Html.RenderPartialSection("Styles")
+</head>
+
+<body style="margin: 0; padding: 0; font-family: NanumBarunGothic, Helvetica, Arial, sans-serif; font-size: 1rem; font-weight: 400; line-height: 1.5;">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border-collapse: collapse;">
+        <tr>
+            <td align="center" bgcolor="#6f42c1" style="padding: 20px 0 20px 0;">
+                <a href="@Configuration["Host:BaseUrl"]" style="text-decoration: none;">
+                    <span style="color: #6610f2; background-color: #f8f9fa; border-radius: .25rem; padding: .25rem .3rem .25rem .4rem; font-size: 75%; font-weight: 700; line-height: 1; text-align: center;">
+                        @Localizer["Brand"]
+                    </span>
+                    <span style="margin-left: .5rem; color: #f8f9fa; font-weight: 700;">
+                        @Localizer["SiteName"]
+                    </span>
+                </a>
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 1.5rem 0 0 0.5rem; font-size: 90%;">
+                @RenderBody()
+            </td>
+        </tr>
+        <tr>
+            <td bgcolor="#ffffff" style="padding: 3rem 0 0 0.5rem; color: #6c757d; font-size: 80%;">
+                <div>
+                    @Localizer["Inquiries"]:
+                    <a href="mailto:@Configuration["EmailAddrs:Support"]" style="text-decoration: none; color: #007bff;">
+                        @Configuration["EmailAddrs:Support"]
+                    </a>
+                </div>
+                <div style="margin-top: .5rem;">
+                    &minus; @Localizer["Brand"] @Localizer["SiteName"]
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    @RenderSection("Scripts", required: false)
+    @Html.RenderPartialSection("Scripts")
+</body>
+</html>

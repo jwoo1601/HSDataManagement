@@ -1,0 +1,7 @@
+{
+  "customer.notFound": "No matching customer found.",
+  "customer.dbFailure": "An error occured while saving customer data.",
+  "customer.deleteFailure": "An error occured while deleting customer data.",
+
+  "dischargeDate.required": "Discharge date is required for setting customer discharged"
+}

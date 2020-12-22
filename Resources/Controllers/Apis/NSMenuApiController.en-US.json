@@ -1,0 +1,26 @@
+{
+  "startDate.invalid": "Invalid start date.",
+  "endDate.invalid": "Invalid end date.",
+  "logType.invalid": "Invalid log type.",
+  "date.invalid": "Invalid date.",
+  "mealType.invalid": "Invalid meal type.",
+  "mealCategory.invalid": "Invalid meal category.",
+
+  "menu.duplicateError": "Menu for the date already exists.",
+  "operationLog.duplicateError": "Operation log for the date and meal type already exists.",
+  "preservationLog.duplicateError": "Preservation log for the date, meal type, and meal category already exists.",
+
+  "mealPackage.notFound": "No matching meal package found.",
+  "menu.notFound": "No matching menu found for the date.",
+  "employeeRole.notFound": "No matching manager found.",
+  "operationLog.notFound": "No matching operation log found.",
+  "preservationLog.notFound": "No matching preservation log found.",
+
+  "menu.dbFailure": "An error occured while saving menu data.",
+  "operationLog.dbFailure": "An error occured while saving operation log data.",
+  "preservationLog.dbFailure": "An error occured while saving preservation log data.",
+
+  "menu.deleteFailure": "An error occured while deleting menu data.",
+  "operationLog.deleteFailure": "An error occured while deleting operation log data.",
+  "preservationLog.deleteFailure": "An error occured while deleting preservation log data."
+}

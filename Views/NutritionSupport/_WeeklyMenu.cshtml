@@ -1,0 +1,81 @@
+﻿@using System.Globalization
+
+@Html.PartialSection("Scripts", @<script src="~/js/nutrition-support/weeklyMenu.js"></script>)
+
+@{
+    var now = DateTime.Now;
+    var currentWeekStart = now.AddDays(-(int)now.DayOfWeek);
+    var currentWeekEnd = currentWeekStart.AddDays((int)DayOfWeek.Saturday);
+}
+
+<div class="row justify-content-between px-4">
+    <div class="col-auto">
+        <form class="form-inline" name="datePeriod">
+            <div class="form-row">
+                <div class="col-auto">
+                    <label for="startDate" class="small mb-1">시작</label>
+                    <input type="date" name="startDate" value="@currentWeekStart.ToString("yyyy-MM-dd")" class="form-control" />
+                </div>
+                <div class="col-auto d-flex align-items-end text-dark">
+                    <span class="h5 oi oi-minus"></span>
+                </div>
+                <div class="col-auto">
+                    <label for="startDate" class="small mb-1">끝</label>
+                    <input type="date" name="endDate" value="@currentWeekEnd.ToString("yyyy-MM-dd")" class="form-control" readonly />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-auto d-flex align-items-center" data-category="menuList">
+        <button class="btn btn-outline-submain mr-2" data-action="reload">
+            <span class="btn-icon oi oi-reload" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-info" data-action="add">
+            <span class="btn-icon oi oi-plus" aria-hidden="true"></span>
+            <span class="d-none d-md-inline ml-2">추가</span>
+        </button>
+    </div>
+</div>
+<div class="row mt-3 px-3 py-4 border-top">
+    <div class="col">
+        <div id="weeklyCalendar" class="hm-calendar">
+            <div class="hm-calendar-header row bg-submain px-3 py-5 justify-content-between align-items-center">
+                <div class="d-inline-block col-1 text-white h6">
+                    &#10094;
+                </div>
+                <div class="d-inline-block col-10 text-white text-center h5">
+                    <div class="year h4 mt-2 font-weight-bold"></div>
+                    <div class="month-and-week"></div>
+                </div>
+                <div class="d-inline-block col-1 text-white h6">
+                    &#10095;
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="hm-calendar-body table table-hover table-bordered text-center vertical-center">
+                    <thead class="thead-light">
+                        <tr>
+                            @foreach (var dow in Enum.GetValues(typeof(DayOfWeek)).Cast<DayOfWeek>())
+                            {
+                                var dayName = DateTimeFormatInfo.CurrentInfo.GetDayName(dow);
+
+                                <th scope="col">
+                                    <div class="hm-calendar-date small"></div>
+                                    <div class="hm-calendar-day-name mt-1">@dayName</div>
+                                </th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            @foreach (var dow in Enum.GetValues(typeof(DayOfWeek)))
+                            {
+                                <td class="px-3 py-2"></td>
+                            }
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

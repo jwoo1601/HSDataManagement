@@ -1,0 +1,8 @@
+{
+  "WelcomeText": "Hello, {0}",
+  "WelcomeText2": "Thank you for joining HyosungJaeil Data Management System!",
+  "WelcomeText3": "We need your confirmation to complete registration.",
+  "Title": "Confirm Your Email Address",
+  "Subtitle": "Please click the button below to confirm your email address:",
+  "ButtonText": "Confirm email address"
+}

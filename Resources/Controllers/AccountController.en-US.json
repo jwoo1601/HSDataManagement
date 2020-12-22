@@ -1,0 +1,27 @@
+{
+  "accessDenied.error.title": "Access Denied",
+  "accessDenied.error.message": "You do not have permission to access this page.",
+
+  "login.lockout": "Too many login attempts; your account is temporarily locked out.",
+  "login.invalidCredentials": "Invalid user credentials: username or password is invalid.",
+
+  "securityCode.notRegistered": "No such security code registered.",
+  "securityCode.invalid": "Invalid security code.",
+
+  "register.confirmEmail": "[HyosungManagement] Please confirm your email address",
+  "register.error": "An error occured during registration.",
+  "register.success.title": "Successful Registration",
+  "register.success.message": "You have been successfully registered to HyosungJaeil Data Management System. Email confirmation is required to complete your registration. Please check your email {0} for further information.",
+
+  "confirmEmail.success.title": "Verification Success",
+  "confirmEmail.success.message": "Successfully verificed email address {0}.",
+  "confirmEmail.error.title": "Verification Error",
+  "confirmEmail.error.message": "An error occured while verifying email address {0}. Click the link below to resend a confirmation email.",
+  "confirmEmail.error.linkText": "Resend Confirmation Email",
+
+  "resendConfirmEmail.success.title": "Resent Confirmation Email",
+  "resendConfirmEmail.success.message": "Successfully resent a confirmation email to {0}. Please check your email for further verification.",
+  "resendConfirmEmail.error.title": "Error",
+  "resendConfirmEmail.error.message": "An error occured while resending a confirmation email to {0}. Click the link below to retry.",
+  "resendConfirmEmail.error.linkText": "Resend Confirmation Email"
+}

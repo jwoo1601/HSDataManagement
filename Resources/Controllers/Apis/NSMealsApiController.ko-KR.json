@@ -1,0 +1,10 @@
+﻿{
+  "meal.notFound": "해당 식단을 찾을 수 없습니다.",
+  "mealPackage.notFound": "해당 식단 패키지를 찾을 수 없습니다.",
+
+  "meal.dbFailure": "식단 데이터를 저장하는 중에 에러가 발생했습니다.",
+  "mealPackage.dbFailure": "식단 패키지 데이터를 저장하는 중에 에러가 발생했습니다.",
+
+  "meal.deleteFailure": "식단 데이터를 제거하는 중에 에러가 발생했습니다.",
+  "mealPackage.deleteFailure": "식단 패키지 데이터를 제거하는 중에 에러가 발생했습니다.",
+}

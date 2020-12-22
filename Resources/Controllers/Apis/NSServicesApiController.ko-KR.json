@@ -1,0 +1,10 @@
+﻿{
+  "service.notFound": "해당 서비스를 찾을 수 없습니다.",
+  "serviceGroup.notFound": "해당 서비스 그룹을 찾을 수 없습니다.",
+
+  "service.dbFailure": "서비스 데이터를 저장하는 중에 에러가 발생했습니다.",
+  "serviceGroup.dbFailure": "서비스 그룹 데이터를 저장하는 중에 에러가 발생했습니다.",
+
+  "service.deleteFailure": "서비스 데이터를 제거하는 중에 에러가 발생했습니다.",
+  "serviceGroup.deleteFailure": "서비스 그룹 데이터를 제거하는 중에 에러가 발생했습니다."
+}

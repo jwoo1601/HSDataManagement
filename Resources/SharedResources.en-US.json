@@ -1,0 +1,12 @@
+{
+  "username.required": "Username must not be empty",
+  "password.required": "Password must not be empty",
+  "confirmPassword.required": "Confirm password must not be empty",
+  "name.required": "Name is required",
+  "email.required": "Email address is required",
+  "securityCode.required": "Security code is required",
+
+  "Password must contain at least {2} characters": "Password must contain at least {2} characters",
+  "confirmPassword.notEqual": "Confirm password does not match the entered password",
+  "email.invalid": "Invalid email address format"
+}

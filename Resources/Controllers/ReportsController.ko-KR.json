@@ -1,0 +1,8 @@
+﻿{
+  "date.invalid": "유효하지 않은 Date 포멧입니다.",
+
+  "report.generateError": "리포트를 생성하는 중에 오류가 발생했습니다.",
+  "operationLog.generateError": "급식운영일지를 생성하는 중에 오류가 발생했습니다.",
+
+  "fileName.operationLog": "급식운영일지_{0}"
+}

@@ -1,0 +1,153 @@
+﻿@inject IViewLocalizer Localizer
+@inject IConfiguration Configuration
+@model OperationLogReportViewModel
+
+@{
+    Layout = "_ReportLayout";
+}
+
+@{
+    var allMealTypes = Enum.GetValues(typeof(MealType)).Cast<MealType>();
+}
+
+<div class="row border-top bg-light">
+    <div class="col small px-2 pt-2 font-weight-bold">
+        1. 식단 및 식수인원
+    </div>
+</div>
+<div class="row mt-2 bg-light">
+    <table class="table table-sm table-bordered text-center small table-col-align-middle">
+        <tbody>
+            <tr class="bg-primary text-light font-weight-bold">
+                <td rowspan="6" class="align-middle bg-secondary">식 단</td>
+                <td colspan="2">조식</td>
+                <td colspan="2">중식</td>
+                <td colspan="2">석식</td>
+            </tr>
+            @{
+                var mainFoodsByMealType = new Dictionary<MealType, IEnumerable<Food>>
+                                                                                                    {
+                    { MealType.Breakfast, Model.GetFoodsInCategory(MealType.Breakfast, MealCategory.Main) },
+                    { MealType.Lunch, Model.GetFoodsInCategory(MealType.Lunch, MealCategory.Main) },
+                    { MealType.Dinner, Model.GetFoodsInCategory(MealType.Dinner, MealCategory.Main) },
+                };
+            }
+            @for (var i = 0; i < 3; i++)
+            {
+                <tr>
+                    @foreach (var mealType in allMealTypes)
+                    {
+                        var foods = mainFoodsByMealType[mealType].Skip(i * 2).Take(2);
+
+                        <td>@foods.FirstOrDefault()</td>
+                        foods = foods.Skip(1);
+                        <td>@foods.FirstOrDefault()</td>
+                    }
+                </tr>
+            }
+            <tr class="bg-success text-light font-weight-bold">
+                <td style="width: 15%;">연식</td>
+                <td style="width: 15%;">오전간식</td>
+                <td style="width: 15%;">연식</td>
+                <td style="width: 15%;">후식</td>
+                <td style="width: 15%;">연식</td>
+                <td style="width: 15%;">오후간식</td>
+            </tr>
+            <tr>
+                <td>@Model.GetFoodsInCategory(MealType.Breakfast, MealCategory.SoftMeal).FirstOrDefault()</td>
+                <td>@Model.GetFoodsInCategory(MealType.Breakfast, MealCategory.Snack).FirstOrDefault()</td>
+                <td>@Model.GetFoodsInCategory(MealType.Lunch, MealCategory.SoftMeal).FirstOrDefault()</td>
+                <td>@Model.GetFoodsInCategory(MealType.Lunch, MealCategory.Dessert).FirstOrDefault()</td>
+                <td>@Model.GetFoodsInCategory(MealType.Dinner, MealCategory.SoftMeal).FirstOrDefault()</td>
+                <td>@Model.GetFoodsInCategory(MealType.Dinner, MealCategory.Snack).FirstOrDefault()</td>
+            </tr>
+            @*<tr>
+                    <td class="bg-secondary text-light font-weight-bold">총 열량</td>
+                    <td colspan="2">605Kcal</td>
+                    <td colspan="2">758Kcal</td>
+                    <td colspan="2">660Kcal</td>
+                </tr>
+                <tr>
+                    <td class="bg-secondary text-light font-weight-bold">단백질</td>
+                    <td colspan="2" class="">22g</td>
+                    <td colspan="2" class="">23g</td>
+                    <td colspan="2" class="">18g</td>
+                </tr>*@
+            @{
+                var operationsByType = Model.Menu.OperationLogs.ToDictionary(op => op.MealType);
+            }
+            <tr>
+                <td class="bg-secondary text-light font-weight-bold">어르신수</td>
+                @foreach (var mealType in allMealTypes)
+                {
+                    <td colspan="2">@(operationsByType[mealType]?.NumCustomersServed ?? 0)명</td>
+                }
+            </tr>
+            <tr>
+                <td class="bg-secondary text-light font-weight-bold">직원식수</td>
+                @foreach (var mealType in allMealTypes)
+                {
+                    <td colspan="2">@(operationsByType[mealType]?.NumEmployeesServed ?? 0)명</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="row border-top bg-light">
+    <div class="col small px-2 pt-2 font-weight-bold">
+        2. 서비스 제공 현황
+    </div>
+</div>
+<div class="row mt-2 bg-light">
+    @{
+        int numCustomersToDisplay;
+        if (!int.TryParse(Configuration["Reports:OperationLog:NumCustomers"], out numCustomersToDisplay))
+        {
+            numCustomersToDisplay = 90;
+        }
+
+        var customersBuckets = Model.Customers.Take(numCustomersToDisplay)
+                                                .Batch(2)
+                                                .Pad(2, Enumerable.Empty<Customer>());
+    }
+
+    @foreach (var customers in customersBuckets)
+    {
+        <div class="col px-0">
+            <table class="table table-sm table-bordered text-center small table-col-align-middle">
+                <tbody>
+                    <tr class="bg-secondary text-light font-weight-bold">
+                        <td rowspan="2" class="align-middle px-0">고객번호</td>
+                        <td rowspan="2" class="align-middle">성명</td>
+                        <td colspan="9">식이 및 서비스 내용</td>
+                    </tr>
+                    <tr class="bg-success text-light">
+                        <td colspan="3">조식</td>
+                        <td colspan="3">중식</td>
+                        <td colspan="3">석식</td>
+                    </tr>
+                    @foreach (var customer in customers)
+                    {
+                        var breakfastService = customer.GetAssignedServiceByMealType(MealType.Breakfast);
+                        var lunchService = customer.GetAssignedServiceByMealType(MealType.Lunch);
+                        var dinnerService = customer.GetAssignedServiceByMealType(MealType.Dinner);
+
+                        <tr>
+                            <td class="px-0">@customer.ID</td>
+                            <td>@customer.Name</td>
+                            <td class="bg-warning">@breakfastService?.ID</td>
+                            <td>@breakfastService?.Name</td>
+                            <td>@breakfastService?.Duration?.TotalMinutes</td>
+                            <td class="bg-warning">@lunchService?.ID</td>
+                            <td>@lunchService?.Name</td>
+                            <td>@lunchService?.Duration?.TotalMinutes</td>
+                            <td class="bg-warning">@dinnerService?.ID</td>
+                            <td>@dinnerService?.Name</td>
+                            <td>@dinnerService?.Duration?.TotalMinutes</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

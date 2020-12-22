@@ -1,0 +1,10 @@
+{
+  "securityCode.notRegistered": "No such security code registered.",
+  "securityCode.invalid": "Invalid security code.",
+  "securityCode.dbFailure": "An error occured while processing security code.",
+
+  "register.confirmEmail": "[HyosungManagement] Please confirm your email address",
+  "register.error": "An error occured during registration.",
+  "register.success.title": "Successful Registration",
+  "register.success.message": "You have been successfully registered to HyosungJaeil Data Management System. Email confirmation is required to complete your registration. Please check your email {0} for further information."
+}
