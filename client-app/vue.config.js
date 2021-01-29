@@ -1,5 +1,5 @@
 module.exports = {
-  outputDir: "../wwwroot/app",
+  // outputDir: "../wwwroot",
   devServer: {
     proxy: {
       "^/": {
@@ -10,5 +10,12 @@ module.exports = {
   },
   configureWebpack: {
     devtool: "source-map",
+  },
+  chainWebpack: (config) => {
+    config.plugin("html").tap((args) => {
+      args[0].title = "HSJ Data Management System";
+
+      return args;
+    });
   },
 };

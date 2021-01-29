@@ -7,4 +7,7 @@ export default {
   CustomerService: "ICustomerService",
   ServiceService: "IServiceService",
   FoodService: "IFoodService",
+  AccountService: "IAccountService",
+  UserService: "IUserService",
+  RoleService: "IRoleService",
 };

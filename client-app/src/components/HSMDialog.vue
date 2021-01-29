@@ -1,6 +1,6 @@
 <template>
   <b-modal
-    :visible="visible"
+    v-model="syncedVisible"
     size="md"
     header-text-variant="white"
     body-text-variant="white"
@@ -23,50 +23,54 @@
     <template #modal-title>
       <slot name="dialog-title">
         <div class="font-weight-bold px-2" :class="`text-${titleVariant}`">
-          <b-icon :icon="icon" class="mr-2"></b-icon> {{ title }}
-        </div></slot
-      >
+          <b-icon :icon="icon" class="mr-2"></b-icon>
+          {{ title }}
+        </div>
+      </slot>
     </template>
     <template #modal-header-close><b-icon icon="x-square"></b-icon></template>
     <template>
-      <b-container class="py-2"
-        ><slot
-          ><b-row
-            ><b-col>{{ message }}</b-col></b-row
-          ></slot
-        >
-      </b-container></template
-    >
-    <template #modal-footer
-      ><hsm-button
+      <b-container class="py-2">
+        <slot>
+          <b-row>
+            <b-col>{{ message }}</b-col>
+          </b-row>
+        </slot>
+      </b-container>
+    </template>
+    <template #modal-footer>
+      <hsm-button
         icon="check"
         variant="success"
         :spacing="1"
         @click="confirm()"
-        >확인</hsm-button
-      ><hsm-button
+      >
+        {{ $t("action.confirm") }}
+      </hsm-button>
+      <hsm-button
         icon="x"
         variant="danger"
         class="ml-2"
         :spacing="1"
         @click="cancel()"
-        >취소</hsm-button
-      ></template
-    >
+      >
+        {{ $t("action.cancel") }}
+      </hsm-button>
+    </template>
   </b-modal>
 </template>
 
 <script lang="ts">
 import Vue from "vue";
 import Component from "vue-class-component";
-import { Emit, Prop } from "vue-property-decorator";
+import { Emit, Prop, PropSync } from "vue-property-decorator";
 
 @Component({
   components: {},
 })
 export default class HSMDialog extends Vue {
-  @Prop({ default: false })
-  visible!: boolean;
+  @PropSync("visible", { default: false })
+  syncedVisible!: boolean;
   @Prop({ default: "exclamation-triangle-fill" })
   icon!: string;
   @Prop({ default: "danger" })

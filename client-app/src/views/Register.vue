@@ -5,7 +5,7 @@
         <b-alert class="px-3 py-3" show variant="danger">
           <h2 class="font-weight-bold ml-2">
             <b-icon icon="exclamation-triangle-fill" class="mr-2"></b-icon>
-            오류
+            {{ $t("title.error") }}
           </h2>
           <hr />
           <ul v-if="serverErrors">
@@ -24,11 +24,14 @@
           :state="formState"
           :validated="serverValidated"
         >
-          <div class="h3 my-3 text-center font-weight-bold">회원가입</div>
+          <div class="h3 my-3 text-center font-weight-bold">
+            <b-icon icon="pencil-square" class="mr-2"></b-icon>
+            {{ $t("title.register") }}
+          </div>
           <b-form-group
             class="mt-5"
             id="group-username"
-            label="아이디"
+            :label="$t('title.username')"
             label-for="input-username"
             :state="usernameState"
           >
@@ -36,7 +39,7 @@
               id="input-username"
               type="text"
               v-model="userData.username"
-              placeholder="아이디"
+              :placeholder="$t('title.username')"
               :state="usernameState"
               required
               trim
@@ -52,7 +55,7 @@
           <b-form-group
             class="mt-3"
             id="group-password"
-            label="비밀번호"
+            :label="$t('title.password')"
             label-for="input-password"
             :state="passwordState"
           >
@@ -60,7 +63,7 @@
               id="input-password"
               type="password"
               v-model="userData.password"
-              placeholder="비밀번호"
+              :placeholder="$t('title.password')"
               :state="passwordState"
               required
               trim
@@ -76,7 +79,7 @@
           <b-form-group
             class="mt-3"
             id="group-confirmPassword"
-            label="비밀번호 확인"
+            :label="$t('title.confirmPassword')"
             label-for="input-confirmPassword"
             :state="confirmPasswordState"
           >
@@ -84,7 +87,7 @@
               id="input-confirmPassword"
               type="password"
               v-model="userData.confirm_password"
-              placeholder="비밀번호 확인"
+              :placeholder="$t('title.confirmPassword')"
               :state="confirmPasswordState"
               required
               trim
@@ -100,7 +103,7 @@
           <b-form-group
             class="mt-3"
             id="group-name"
-            label="이름"
+            :label="$t('title.name')"
             label-for="input-name"
             :state="nameState"
           >
@@ -108,7 +111,7 @@
               id="input-name"
               type="text"
               v-model="userData.name"
-              placeholder="이름"
+              :placeholder="$t('title.name')"
               :state="nameState"
               required
               trim
@@ -124,7 +127,7 @@
           <b-form-group
             class="mt-3"
             id="group-email"
-            label="이메일 주소"
+            :label="$t('title.emailAddress')"
             label-for="input-email"
             :state="nameState"
           >
@@ -134,7 +137,7 @@
                   id="input-email"
                   type="text"
                   v-model="userData.email"
-                  placeholder="이메일"
+                  :placeholder="$t('title.email')"
                   :state="emailState"
                   required
                   trim
@@ -169,7 +172,7 @@
           <b-form-group
             class="mt-3"
             id="group-security-code"
-            label="보안코드"
+            :label="$t('title.securityCode')"
             label-for="input-security-code"
             :state="nameState"
           >
@@ -177,7 +180,7 @@
               id="input-security-code"
               type="text"
               v-model="userData.security_code"
-              placeholder="보안코드"
+              :placeholder="$t('title.securityCode')"
               :state="securityCodeState"
               required
             ></b-form-input>
@@ -197,22 +200,20 @@
             fontWeight="bold"
             class="w-100 mt-4"
             @click="registerUserAsync()"
-            >회원가입</hsm-button
           >
+            {{ $t("title.register") }}
+          </hsm-button>
         </b-form>
       </b-col>
     </b-row>
     <hsm-success
       v-if="createdUser"
-      title="회원가입 성공"
-      :message="
-        `효성제일건강센터 데이터 관리 시스템으로의 회원가입을 성공했습니다. 회원가입 절차를 완료하기 위해서는 이메일 주소 확인이 필요합니다. 자세한 사항은 이메일 ${createdUser.email} 을 확인해주세요.`
-      "
-      linkText="이메일 재전송"
+      :title="$t('success.register')"
+      :message="$t('message.registrationSuccess', { email: createdUser.email })"
+      :linkText="$t('title.resendConfirmationEmail')"
       linkUrl="/account/confirm-email/resend"
       showLink
-    >
-    </hsm-success>
+    ></hsm-success>
   </div>
 </template>
 
@@ -223,7 +224,7 @@ import Component from "vue-class-component";
 import { Inject } from "vue-property-decorator";
 import { Container } from "inversify";
 import serviceTypes from "@/services/serviceTypes";
-import { HSMUser, HSMUserRegisterInputModel } from "@/models/api/User";
+import HSMUser, { HSMUserRegisterInputModel } from "@/models/api/User";
 import HSMValidationError from "@/models/api/ValidationError";
 import { NavigationGuardNext, Route } from "vue-router";
 import IQueryService from "@/services/queryService";
@@ -412,7 +413,7 @@ export default class Register extends Vue {
 
   async registerUserAsync() {
     if (this.formState) {
-      AppModule.showLoading("처리 중");
+      AppModule.showLoading(this.$t("loading.processing").toString());
 
       this.resetState();
 
@@ -441,4 +442,5 @@ export default class Register extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped></style>
+>

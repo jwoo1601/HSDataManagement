@@ -10,6 +10,9 @@ import IOAuthService, { DefaultOAuthService } from "./oauthService";
 import IQueryService, { AxiosQueryService } from "./queryService";
 import IServiceService, { DefaultServiceService } from "./serviceService";
 import IFoodService, { DefaultFoodService } from "./foodService";
+import IAccountService, { DefaultAccountService } from "./accountService";
+import IUserService, { DefaultUserService } from "./userService";
+import IRoleService, { DefaultRoleService } from "./roleService";
 
 const container = new Container({
   defaultScope: "Transient",
@@ -34,5 +37,10 @@ container
   .bind<IServiceService>(ServiceTypes.ServiceService)
   .to(DefaultServiceService);
 container.bind<IFoodService>(ServiceTypes.FoodService).to(DefaultFoodService);
+container
+  .bind<IAccountService>(ServiceTypes.AccountService)
+  .to(DefaultAccountService);
+container.bind<IUserService>(ServiceTypes.UserService).to(DefaultUserService);
+container.bind<IRoleService>(ServiceTypes.RoleService).to(DefaultRoleService);
 
 export default container;

@@ -20,7 +20,8 @@
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "outDir": "src/ts-compiled",
     "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors": true
+    "suppressImplicitAnyIndexErrors": true,
+    "resolveJsonModule": true
   },
   "include": [
     "src/**/*.ts",

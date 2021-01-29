@@ -5,11 +5,14 @@
         name="login"
         class="px-4 py-3 border border-2 border-light shadow"
       >
-        <div class="h3 my-3 text-center font-weight-bold">로그인</div>
+        <div class="h3 my-3 text-center font-weight-bold">
+          <b-icon icon="lock-fill" class="mr-2"></b-icon>
+          {{ $t("title.login") }}
+        </div>
         <b-form-group
           class="mt-5"
           id="group-username"
-          label="아이디"
+          :label="$t('title.id')"
           label-for="input-username"
           :state="usernameState"
         >
@@ -17,7 +20,7 @@
             id="input-username"
             type="text"
             v-model="credentials.username"
-            placeholder="아이디"
+            :placeholder="$t('title.id')"
             :state="usernameState"
             required
             trim
@@ -26,7 +29,7 @@
         <b-form-group
           class="mt-3"
           id="group-password"
-          label="비밀번호"
+          :label="$t('title.password')"
           label-for="input-password"
           :state="passwordState"
         >
@@ -34,7 +37,7 @@
             id="input-password"
             type="password"
             v-model="credentials.password"
-            placeholder="비밀번호"
+            :placeholder="$t('title.password')"
             :state="passwordState"
             required
           ></b-form-input>
@@ -45,7 +48,7 @@
           name="RememberLogin"
           switch
         >
-          로그인 상태 유지
+          {{ $t("action.rememberMe") }}
         </b-form-checkbox>
 
         <hsm-button
@@ -56,7 +59,7 @@
           class="w-100 mt-4"
           @click="handleLogin()"
         >
-          로그인
+          {{ $t("title.login") }}
         </hsm-button>
       </b-form>
     </b-col>
@@ -104,7 +107,7 @@ export default class Login extends Vue {
 
   async handleLogin() {
     if (this.formState) {
-      AppModule.showLoading("로그인 중");
+      AppModule.showLoading(this.$t("loading.login").toString());
 
       const result = await AccountModule.loginAsync(this.credentials);
 
@@ -118,8 +121,10 @@ export default class Login extends Vue {
         }
       } else {
         AppModule.showErrorDialog({
-          title: "로그인 오류",
-          message: result.errorMessage as string,
+          title: this.$t("error.login").toString(),
+          message: this.$t(result.errorMessage as string, {
+            message: result.payload,
+          }).toString(),
         });
       }
     }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,14 +27,29 @@ namespace HyosungManagement.Data
         HSMUserToken
     >
     {
+        public DbSet<SecurityCode> SecurityCodes { get; set; }
+
+        private readonly IConfiguration configuration;
+
         public UserDbContext(
-            DbContextOptions<UserDbContext> options)
+            DbContextOptions<UserDbContext> options,
+            IConfiguration configuration
+        )
             : base(options)
         {
-
+            this.configuration = configuration;
         }
 
-        public DbSet<SecurityCode> SecurityCodes { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
+            base.OnConfiguring(builder);
+
+            builder
+                .UseSqlServer(
+                    configuration.GetConnectionString("User")
+                )
+                .UseLazyLoadingProxies();
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -67,9 +83,11 @@ namespace HyosungManagement.Data
                         .IsRequired();
 
                 entity.Property(e => e.RegisteredAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 entity.Property(e => e.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
 
             modelBuilder.Entity<HSMRole>(entity => {
@@ -110,6 +128,10 @@ namespace HyosungManagement.Data
                 e.ToTable("SecurityCode")
                     .Property(sc => sc.CodeType)
                     .HasConversion(new EnumToStringConverter<SecurityCodeType>());
+
+                e.Property(e => e.GeneratedAt)
+                 .HasDefaultValueSql("GETUTCDATE()")
+                 .ValueGeneratedOnAdd();
             });
         }
     }

@@ -256,7 +256,9 @@ namespace HyosungManagement.Migrations.UserDb
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("GeneratedAt")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.Property<bool>("IsValid")
                         .HasColumnType("bit");

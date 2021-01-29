@@ -14,8 +14,7 @@
       id="loading-loading"
       :visible="loading"
       :message="loadingText"
-    >
-    </hsm-loading-dialog>
+    ></hsm-loading-dialog>
 
     <hsm-dialog
       id="error-dialog"
@@ -24,6 +23,10 @@
       :message="errorDialogText"
       @close="handleErrorDialogClosed()"
     ></hsm-dialog>
+
+    <footer style="margin-top: 160px">
+      <footer-view></footer-view>
+    </footer>
   </div>
 </template>
 
@@ -33,9 +36,12 @@ import Component from "vue-class-component";
 import ServiceTypes from "@/services/serviceTypes";
 import serviceContainer from "@/services/serviceContainer";
 import AppModule from "@/store/modules/app";
+import FooterView from "@/views/Footer.vue";
 
 @Component({
-  components: {},
+  components: {
+    "footer-view": FooterView,
+  },
   provide: {
     [ServiceTypes.ServiceContainer]: serviceContainer,
   },

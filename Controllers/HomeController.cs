@@ -34,11 +34,11 @@ namespace HyosungManagement.Controllers
             Localizer = localizer;
         }
 
-        //[HttpGet]
-        //public IActionResult Index()
-        //{
-        //    return View();
-        //}
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return View();
+        }
 
         [HttpGet("error", Name = "Error")]
         public async Task<IActionResult> ErrorAsync(

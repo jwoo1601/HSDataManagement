@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +21,6 @@ namespace HyosungManagement.Data
         IConfigurationDbContext,
         IPersistedGrantDbContext
     {
-        public AuthDbContext(
-            DbContextOptions<AuthDbContext> options)
-            : base(options)
-        {
-
-        }
-
         public DbSet<Client> Clients { get; set; }
         public DbSet<ClientCorsOrigin> ClientCorsOrigins { get; set; }
         public DbSet<IdentityResource> IdentityResources { get; set; }
@@ -35,9 +29,30 @@ namespace HyosungManagement.Data
         public DbSet<PersistedGrant> PersistedGrants { get; set; }
         public DbSet<DeviceFlowCodes> DeviceFlowCodes { get; set; }
 
+        private readonly IConfiguration configuration;
+
+        public AuthDbContext(
+            DbContextOptions<AuthDbContext> options,
+            IConfiguration configuration
+        )
+            : base(options)
+        {
+            this.configuration = configuration;
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await base.SaveChangesAsync();
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
+            base.OnConfiguring(builder);
+
+            builder
+                .UseSqlServer(
+                    configuration.GetConnectionString("Auth")
+                );
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -1,20 +1,19 @@
 <template>
   <hsm-data-table
     header-icon="collection-fill"
-    header="음식 카테고리"
+    :header="$t('tab.foodCategory')"
     :field-definitions="fieldDefinitions"
     :fetch-entries-action="fetchEntriesAsync"
     :entries="foodCategories"
     :entries-mapper="mapTableItems"
     :labels="labels"
     :delete-entry-action="deleteEntryAsync"
-    :criteria="criteria"
     :criteria-options="criteriaOptions"
   >
-    <template #cell(note)="data">
+    <template #cell(note)="{ value, index }">
       <div class="d-flex justify-content-center text-center pt-1">
         <hsm-button
-          :id="`foodCategory-showNote-${data.index}`"
+          :id="`foodCategory-showNote-${index}`"
           class="mr-3"
           size="sm"
           icon="pencil-fill"
@@ -24,15 +23,15 @@
           hoverTextVariant="light"
           fontWeight="bold"
         >
-          노트
+          {{ $t("field.note") }}
         </hsm-button>
         <b-tooltip
-          v-if="data.value != null"
-          :target="`foodCategory-showNote-${data.index}`"
+          v-if="value != null"
+          :target="`foodCategory-showNote-${index}`"
           placement="top"
           variant="success"
         >
-          {{ data.value }}
+          {{ value }}
         </b-tooltip>
       </div>
     </template>
@@ -65,6 +64,7 @@ import {
 } from "bootstrap-vue";
 import {
   HSMDataTableFieldDefinition,
+  HSMDataTableFilterCriteria,
   HSMDataTableItem,
   HSMDataTableLabels,
 } from "@/components/HSMDataTable.vue";
@@ -82,18 +82,21 @@ interface FoodCategoryTableItem extends HSMDataTableItem {
 })
 export default class FoodCategory extends Vue {
   readonly fieldDefinitions: HSMDataTableFieldDefinition[] = [
-    { key: "numFoods", label: "등록된 음식", sortable: true },
-    { key: "note", label: "노트", searchable: false, hasCustomRenderer: true },
+    { key: "numFoods", label: "field.numFoods", sortable: true },
+    {
+      key: "note",
+      label: "field.note",
+      searchable: false,
+      hasCustomRenderer: true,
+    },
   ];
   readonly labels: HSMDataTableLabels = {
-    item: "음식 카테고리",
+    item: "label.category",
   };
-
-  criteria: "id" | "name" | "numFoods" = "id";
-  criteriaOptions = [
-    { value: "id", text: "연번" },
-    { value: "name", text: "이름" },
-    { value: "numFoods", text: "음식 갯수" },
+  readonly criteriaOptions: HSMDataTableFilterCriteria[] = [
+    { value: "id", text: "field.id" },
+    { value: "name", text: "field.name" },
+    { value: "numFoods", text: "field.numFoods" },
   ];
 
   get foodCategories() {

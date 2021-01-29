@@ -1,0 +1,115 @@
+{
+  "menu": {
+    "customer": "@.capitalize:(label.customer)",
+    "nutritionSupport": "Soutien Nutritionnel",
+    "employee": "@.capitalize:(label.employee)",
+    "dashboard": "Tableau de Bord",
+    "report": "@.capitalize:(label.report)",
+    "test": "@.capitalize:(label.test)",
+    "register": "@.capitalize:(label.register)",
+    "login": "@.capitalize:(label.login)",
+    "logout": "@.capitalize:(label.logout)",
+    "foodManagement": "@.capitalize:(label.management) des Aliments",
+    "menuManagement": "@.capitalize:(label.management) des @.capitalize:(label.menu)s",
+    "serviceManagement": "La @.capitalize:(label.management) des @.capitalize:(label.service)s"
+  },
+  "label": {
+    "hsm": [
+      "HSJ",
+      "",
+      "@.capitalize:(label.management) de @.capitalize:(label.data)"
+    ],
+    "login": "s'identifier",
+    "logout": "se déconnecter",
+    "register": "s'inscrire",
+    "customer": "client",
+    "employee": "employé",
+    "test": "tester",
+    "report": "rapport",
+    "add": "ajouter",
+    "category": "catégorie",
+    "remove": "retirer",
+    "edit": "éditer",
+    "food": "nourriture",
+    "ingredient": "ingrédient",
+    "menu": "menu",
+    "select": "sélectionner",
+    "service": "service",
+    "unselect": "désélectionner",
+    "management": "gestion",
+    "data": "données",
+    "group": "groupe",
+    "setting": "paramètre",
+    "table": "table",
+    "note": "note",
+    "name": "nom",
+    "item": "élément",
+    "id": "id",
+    "action": "action",
+    "duration": "durée",
+    "loading": "chargement",
+    "password": "mot de passe",
+    "error": "Erreur",
+    "username": "@.capitalize:(label.name) de l’utilisateur",
+    "address": "adresse",
+    "code": "code",
+    "confirm": "confirmer",
+    "email": "email",
+    "security": "sécurité"
+  },
+  "loading": {
+    "general": "Chargement",
+    "logout": "Déconnecter",
+    "data": "@.capitalize:(label.data) en cours de @:(label.loading)",
+    "login": "Connectez-vous à votre compte",
+    "processing": "En traitement"
+  },
+  "tab": {
+    "service": "@.capitalize:(label.service)s",
+    "serviceGroup": "@.capitalize:(label.group)s de @.capitalize:(label.service)s"
+  },
+  "action": {
+    "add": "@.capitalize:(label.add)",
+    "edit": "@.capitalize:(label.edit)",
+    "remove": "@.capitalize:(label.remove)",
+    "removeSelected": "Supprimer des Sélections",
+    "select": "@.capitalize:(label.select)",
+    "tableSettings": "@.capitalize:(label.setting)s de @.capitalize:(label.table)",
+    "unselect": "@.capitalize:(label.unselect)",
+    "rememberMe": "Souviens-toi de moi"
+  },
+  "field": {
+    "actions": "@.capitalize:(label.action)s",
+    "duration": "@.capitalize:(label.duration)",
+    "id": "#",
+    "item": "@.capitalize:(label.item)s",
+    "name": "@.capitalize:(label.name)",
+    "note": "@.capitalize:(label.note)",
+    "serviceGroup": "@.capitalize:(label.group)",
+    "ingredient": "@.capitalize:(label.ingredient)s",
+    "category": "@.capitalize:(label.category)"
+  },
+  "title": {
+    "login": "@.capitalize:(label.login)",
+    "id": "@.upper:(label.id)",
+    "password": "@.capitalize:(label.password)",
+    "error": "@.capitalize:(label.error)",
+    "register": "@.capitalize:(label.register)",
+    "username": "@.capitalize:(label.name) de l’utilisateur",
+    "emailAddress": "@.capitalize:(label.address) Électronique",
+    "confirmPassword": "Confirmez le @:(label.password)",
+    "name": "@.capitalize:(label.name)",
+    "email": "@.capitalize:(label.email)",
+    "securityCode": "@.capitalize:(label.code) de @:(label.security)",
+    "resendConfirmationEmail": "Renvoyer un courriel de confirmation"
+  },
+  "error": {
+    "login": "@.capitalize:(label.error) d'identification"
+  },
+  "success": {
+    "register": "Inscription Réussie"
+  },
+  "message": {
+    "registrationSuccess": "Vous avez été enregistré avec succès sur HSJ Système de Gestion des Données. Une confirmation par e-mail est requise pour terminer le processus d'inscription. Veuillez vérifier votre courrier électronique {email} pour obtenir des instructions supplémentaires."
+  }
+}

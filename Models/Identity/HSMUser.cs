@@ -18,9 +18,7 @@ namespace HyosungManagement.Models.Identity
         [Required, MaxLength(50)]
         public string Name { get; set; }
         public string Locale { get; set; }
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime RegisteredAt { get; set; }
-        [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]
         public DateTime LastUpdatedAt { get; set; }
         public bool IsActive { get; set; }
 
@@ -57,7 +55,7 @@ namespace HyosungManagement.Models.Identity
                     value.Email,
                     value.EmailConfirmed,
                     value.Name,
-                    value.SecurityCode,
+                    SecurityCode = value.SecurityCode.Value,
                     value.Locale,
                     value.AccessFailedCount,
                     value.LockoutEnd,

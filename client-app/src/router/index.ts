@@ -96,6 +96,22 @@ const routes: Array<RouteConfig> = [
       requiresAuth: true,
       accessRoles: ["Master"],
     },
+    children: [
+      {
+        path: "security-code",
+        name: "SecurityCode",
+        component: () =>
+          import(
+            /* webpackChunkName: "security-code" */ "@/views/SecurityCode.vue"
+          ),
+      },
+      {
+        path: "user",
+        name: "User",
+        component: () =>
+          import(/* webpackChunkName: "user" */ "@/views/User.vue"),
+      },
+    ],
   },
   {
     path: "/login",

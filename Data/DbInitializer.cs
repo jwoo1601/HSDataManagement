@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using IdentityServer4.Extensions;
 using IdentityServer4.EntityFramework.Mappers;
+using Microsoft.EntityFrameworkCore;
 
 namespace HyosungManagement.Data
 {
@@ -135,26 +136,25 @@ namespace HyosungManagement.Data
                 }
             };
 
-        public static IServiceProvider AddSampleHSMData(this IServiceProvider services)
+        public static IServiceProvider InjectDefaultAppData(this IServiceProvider services)
         {
             try
             {
-                services.GetRequiredService<AppDbContext>()
-                        .InitMainData();
+                var context = services.GetRequiredService<AppDbContext>();
+                context.Database.Migrate();
+                context.AddData();
             }
             catch (Exception e)
             {
                 services.GetRequiredService<ILogger<Program>>()
-                        .LogError(e, "An error occured while seeding the database with test data.");
+                        .LogError(e, "An error occured while seeding the main database with default data.");
             }
 
             return services;
         }
 
-        public static AppDbContext InitMainData(this AppDbContext context)
+        public static AppDbContext AddData(this AppDbContext context)
         {
-            context.Database.EnsureCreated();
-
             if (!context.Customers.Any())
             {
                 foreach (var c in Customers)

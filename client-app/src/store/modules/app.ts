@@ -1,3 +1,4 @@
+import Locale, { UILocales } from "@/models/Locale";
 import store from "@/store";
 import {
   VuexModule,
@@ -6,6 +7,7 @@ import {
   Action,
   getModule,
 } from "vuex-module-decorators";
+import i18n, { DefaultLocale, loadI18nLangAsync } from "@/i18n";
 
 export interface DialogInfo {
   visible: boolean;
@@ -17,6 +19,7 @@ export interface AppState {
   loading: boolean;
   loadingText: string;
   errorDialog: DialogInfo;
+  currentLocale: Locale;
 }
 
 @Module({ dynamic: true, store, name: "app" })
@@ -28,6 +31,7 @@ class App extends VuexModule implements AppState {
     title: "",
     message: "",
   };
+  public currentLocale: Locale = DefaultLocale;
 
   @Mutation
   private SET_LOADING(loading: boolean): void {
@@ -42,6 +46,11 @@ class App extends VuexModule implements AppState {
   @Mutation
   private SET_ERROR_DIALOG_INFO(info: DialogInfo) {
     this.errorDialog = info;
+  }
+
+  @Mutation
+  private SET_CURRENT_LOCALE(locale: Locale) {
+    this.currentLocale = locale;
   }
 
   @Action
@@ -77,6 +86,12 @@ class App extends VuexModule implements AppState {
   public resetState() {
     this.hideLoading();
     this.hideErrorDialog();
+  }
+
+  @Action
+  public async changeLocaleAsync(locale: Locale) {
+    this.SET_CURRENT_LOCALE(locale);
+    await loadI18nLangAsync(locale);
   }
 }
 

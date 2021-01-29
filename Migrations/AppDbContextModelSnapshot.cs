@@ -19,6 +19,45 @@ namespace HyosungManagement.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("HyosungManagement.Models.CommentReply", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("CommentID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("WriterID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CommentID");
+
+                    b.ToTable("CommentReply");
+                });
+
             modelBuilder.Entity("HyosungManagement.Models.Customer", b =>
                 {
                     b.Property<int>("ID")
@@ -525,6 +564,123 @@ namespace HyosungManagement.Migrations
                     b.ToTable("OperationLog");
                 });
 
+            modelBuilder.Entity("HyosungManagement.Models.Post", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("CategoryID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(200)")
+                        .HasMaxLength(200);
+
+                    b.Property<long>("ViewCount")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("WriterID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("CategoryID");
+
+                    b.ToTable("Post");
+                });
+
+            modelBuilder.Entity("HyosungManagement.Models.PostCategory", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Icon")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(100)")
+                        .HasMaxLength(100);
+
+                    b.Property<bool>("ShowBoard")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("PostCategory");
+                });
+
+            modelBuilder.Entity("HyosungManagement.Models.PostComment", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("LastUpdatedAt")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
+
+                    b.Property<int>("PostID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(1000)")
+                        .HasMaxLength(1000);
+
+                    b.Property<string>("WriterID")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("PostID");
+
+                    b.ToTable("PostComment");
+                });
+
             modelBuilder.Entity("HyosungManagement.Models.PreservationLog", b =>
                 {
                     b.Property<int>("ID")
@@ -672,6 +828,36 @@ namespace HyosungManagement.Migrations
                     b.ToTable("ServiceGroup");
                 });
 
+            modelBuilder.Entity("HyosungManagement.Models.CommentReply", b =>
+                {
+                    b.HasOne("HyosungManagement.Models.PostComment", "AssignedComment")
+                        .WithMany("Replies")
+                        .HasForeignKey("CommentID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("HyosungManagement.Models.Like", "Likes", b1 =>
+                        {
+                            b1.Property<string>("LikedBy")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("OwnerID")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("LikedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("LikedBy", "OwnerID");
+
+                            b1.HasIndex("OwnerID");
+
+                            b1.ToTable("CommentReply_Likes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OwnerID");
+                        });
+                });
+
             modelBuilder.Entity("HyosungManagement.Models.CustomerServiceAssignment", b =>
                 {
                     b.HasOne("HyosungManagement.Models.Customer", "Customer")
@@ -784,6 +970,65 @@ namespace HyosungManagement.Migrations
                     b.HasOne("HyosungManagement.Models.DailyMenu", "DailyMenu")
                         .WithMany("OperationLogs")
                         .HasForeignKey("DailyMenuID");
+                });
+
+            modelBuilder.Entity("HyosungManagement.Models.Post", b =>
+                {
+                    b.HasOne("HyosungManagement.Models.PostCategory", "Category")
+                        .WithMany("Posts")
+                        .HasForeignKey("CategoryID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.OwnsMany("HyosungManagement.Models.Like", "Likes", b1 =>
+                        {
+                            b1.Property<string>("LikedBy")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("OwnerID")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("LikedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("LikedBy", "OwnerID");
+
+                            b1.HasIndex("OwnerID");
+
+                            b1.ToTable("Post_Likes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OwnerID");
+                        });
+                });
+
+            modelBuilder.Entity("HyosungManagement.Models.PostComment", b =>
+                {
+                    b.HasOne("HyosungManagement.Models.Post", "AssignedPost")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.OwnsMany("HyosungManagement.Models.Like", "Likes", b1 =>
+                        {
+                            b1.Property<string>("LikedBy")
+                                .HasColumnType("nvarchar(450)");
+
+                            b1.Property<int>("OwnerID")
+                                .HasColumnType("int");
+
+                            b1.Property<DateTime>("LikedAt")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("LikedBy", "OwnerID");
+
+                            b1.HasIndex("OwnerID");
+
+                            b1.ToTable("PostComment_Likes");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OwnerID");
+                        });
                 });
 
             modelBuilder.Entity("HyosungManagement.Models.PreservationLog", b =>

@@ -17,6 +17,7 @@ namespace HyosungManagement
     {
         public static readonly string DevelopmentNLogConfig = "nlog.Development.config";
         public static readonly string ProductionNLogConfig = "nlog.config";
+        public static readonly string SampleNLogConfig = "nlog.Sample.config";
 
         public static void Main(string[] args)
         {
@@ -26,6 +27,10 @@ namespace HyosungManagement
             if (environment == Environments.Production)
             {
                 nlogConfig = ProductionNLogConfig;
+            }
+            else if (environment == "Sample")
+            {
+                nlogConfig = SampleNLogConfig;
             }
             else
             {
@@ -41,13 +46,11 @@ namespace HyosungManagement
                 using (var scope = host.Services.CreateScope())
                 {
                     var services = scope.ServiceProvider;
-                    services.AddDefaultAuthData();
-
                     var env = services.GetRequiredService<IWebHostEnvironment>();
-                    if (env.IsDevelopment())
-                    {
-                        services.AddSampleHSMData();
-                    }
+
+                    services.InjectDefaultAppData();
+                    services.InjectDefaultUserData();
+                    services.InjectDefaultAuthData();
 
                     startupLogger.Info("HSM Application environment: {Environment}", env.EnvironmentName);
                 }

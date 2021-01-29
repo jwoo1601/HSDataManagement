@@ -15,27 +15,12 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using IdentityServer4;
 using IdentityModel;
+using Microsoft.EntityFrameworkCore;
 
 namespace HyosungManagement.Data
 {
     public static class AuthDbInitializer
     {
-        static HSMRole[] Roles
-            => new[]
-            {
-                new HSMRole("User"),
-                new HSMRole("Admin"),
-                new HSMRole("Master")
-            };
-
-        static IDictionary<string, IEnumerable<PermissionGroup>> PermissionsByRole
-            => new Dictionary<string, IEnumerable<PermissionGroup>>
-            {
-                { "User", HSMPermissionGroups.DefaultUserPermissions },
-                { "Admin", HSMPermissionGroups.DefaultAdminPermissions },
-                { "Master", HSMPermissionGroups.DefaultMasterPermissions },
-            };
-
         static IdentityResource[] IdentityResources
             => new[]
             {
@@ -148,43 +133,25 @@ namespace HyosungManagement.Data
                 }
             };
 
-        public static IServiceProvider AddDefaultAuthData(this IServiceProvider services)
+        public static IServiceProvider InjectDefaultAuthData(this IServiceProvider services)
         {
             try
             {
-                services.GetRequiredService<RoleManager<HSMRole>>()
-                        .AddRoles();
-
-                services.GetRequiredService<AuthDbContext>()
-                        .InitAuthData();
+                var context = services.GetRequiredService<AuthDbContext>();
+                context.Database.Migrate();
+                context.AddData();
             }
             catch (Exception e)
             {
                 services.GetRequiredService<ILogger<Program>>()
-                        .LogError(e, "An error occured while seeding the database with auth data.");
+                        .LogError(e, "An error occured while seeding the auth database with default data.");
             }
 
             return services;
         }
 
-        public static RoleManager<HSMRole> AddRoles(this RoleManager<HSMRole> roleManager)
+        public static AuthDbContext AddData(this AuthDbContext context)
         {
-            if (!roleManager.Roles.Any())
-            {
-                foreach (var role in Roles)
-                {
-                    roleManager.CreateAsync(role).Wait();
-                    roleManager.AddRolePermissionsAsync(role, PermissionsByRole[role.Name]).Wait();
-                };
-            }
-
-            return roleManager;
-        }
-
-        public static AuthDbContext InitAuthData(this AuthDbContext context)
-        {
-            context.Database.EnsureCreated();
-
             if (!context.IdentityResources.Any())
             {
                 foreach (var ir in IdentityResources)

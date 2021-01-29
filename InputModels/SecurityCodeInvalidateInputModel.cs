@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HyosungManagement.InputModels
 {
-    public class SecurityCodeInvalidateInputModel : IUserEntityInputModel<SecurityCode>
+    public class SecurityCodeInvalidateInputModel : IUserDbEntityInputModel<SecurityCode>
     {
         [Required]
         public string Code { get; set; }

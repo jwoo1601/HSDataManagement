@@ -10,10 +10,10 @@
       <b-container>
         <b-navbar-brand to="/" class="hsm">
           <b-badge variant="light" class="text-main">
-            효성
-            <span class="d-none d-md-inline">제일건강센터</span>
+            {{ $t("label.hsm[0]") }}
+            <span class="d-none d-md-inline">{{ $t("label.hsm[1]") }}</span>
           </b-badge>
-          <span class="ml-3">데이터 관리 시스템</span>
+          <span class="ml-3">{{ $t("label.hsm[2]") }}</span>
         </b-navbar-brand>
 
         <b-navbar-toggle target="collapse-nav-items"></b-navbar-toggle>
@@ -26,44 +26,78 @@
               :to="item.route"
               :class="[getMenuItemClass(item), 'hsm']"
               @click="handleClickNavItem(item)"
-              >{{ item.name }}
+            >
+              {{ $t(item.key) }}
             </b-nav-item>
           </b-navbar-nav>
         </b-collapse>
+
+        <b-navbar-nav class="ml-auto">
+          <b-nav-form>
+            <hsm-dropdown
+              id="dropdown-locale"
+              class="mr-3 px-0 py-0"
+              icon="globe"
+              size="md"
+              spacing="0"
+              text=""
+              variant="outline-submain"
+              text-variant="light"
+              font-weight="bolder"
+              focus-effect
+              no-caret
+              no-flip
+              boundary="window"
+            >
+              <b-dropdown-item-button
+                v-for="locale in supportedLocales"
+                :key="locale.code"
+                :active="locale.code === currentLocale.code"
+                active-class="bg-primary text-light"
+                button-class=""
+                @click="setCurrentLocaleAsync(locale)"
+              >
+                {{ locale.name }}
+              </b-dropdown-item-button>
+            </hsm-dropdown>
+          </b-nav-form>
+        </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto d-none d-md-inline">
           <b-nav-form>
             <hsm-button
               v-if="!authenticated"
-              icon="box-arrow-right"
+              icon="lock-fill"
               to="/login"
               size="sm"
+              spacing="0"
               variant="outline-light"
               textVariant="light"
               hoverVariant="white"
               hoverTextVariant="submain"
-              fontWeight="bolder"
+              fontWeight="bold"
               class="mr-3"
               squared
               focusEffect
-              >로그인</hsm-button
-            >
+            ></hsm-button>
             <hsm-button
               v-if="!authenticated"
-              icon="key-fill"
+              icon="pencil-square"
               to="/register"
               size="sm"
+              spacing="0"
               variant="outline-light"
               textVariant="light"
               hoverVariant="white"
               hoverTextVariant="submain"
-              fontWeight="bolder"
+              fontWeight="bold"
               class="mr-2"
               squared
               focusEffect
-              >회원가입</hsm-button
-            >
+            ></hsm-button>
+
             <hsm-dropdown
+              id="dropdown-account"
               v-if="authenticated"
               icon="person-fill"
               :text="username"
@@ -80,12 +114,13 @@
               focusEffect
             >
               <b-dropdown-text variant="submain">{{ role }}</b-dropdown-text>
-              <b-dropdown-divider> </b-dropdown-divider>
+              <b-dropdown-divider></b-dropdown-divider>
               <b-dropdown-item-button
                 button-class="text-danger"
                 @click="handleLogout()"
-                >로그아웃</b-dropdown-item-button
               >
+                {{ $t("menu.logout") }}
+              </b-dropdown-item-button>
             </hsm-dropdown>
           </b-nav-form>
         </b-navbar-nav>
@@ -100,10 +135,11 @@ import Component from "vue-class-component";
 import { Prop, Watch } from "vue-property-decorator";
 import AppModule from "@/store/modules/app";
 import AccountModule from "@/store/modules/account";
+import Locale, { UILocales } from "@/models/Locale";
 
 interface HSMNavItemData {
   id: string;
-  name: string;
+  key: string;
   route?: string;
   smallScreenOnly?: boolean;
   handleClick?(): void;
@@ -128,38 +164,43 @@ export default class HSMNavbar extends Vue {
   private navItems: HSMNavItemData[] = [
     {
       id: "customer",
-      name: "고객관리",
+      key: "menu.customer",
       route: "/customer",
     },
     {
       id: "nutrition-support",
-      name: "영양지원과",
+      key: "menu.nutritionSupport",
       route: "/nutrition-support",
     },
     {
+      id: "employee",
+      key: "menu.employee",
+      route: "/employee",
+    },
+    {
       id: "report",
-      name: "리포트",
+      key: "menu.report",
       route: "/report",
     },
     {
       id: "dashboard",
-      name: "대시보드",
+      key: "menu.dashboard",
       route: "/dashboard",
     },
-    {
-      id: "test",
-      name: "테스트",
-      route: "/test",
-    },
+    // {
+    //   id: "test",
+    //   key: "menu.test",
+    //   route: "/test",
+    // },
     {
       id: "login",
-      name: "로그인",
+      key: "menu.login",
       route: "/login",
       smallScreenOnly: true,
     },
     {
       id: "register",
-      name: "회원가입",
+      key: "menu.register",
       route: "/register",
       smallScreenOnly: true,
     },
@@ -198,7 +239,7 @@ export default class HSMNavbar extends Vue {
   }
 
   async handleLogout() {
-    AppModule.showLoading("로그아웃 중");
+    AppModule.showLoading(this.$t("loading.logout").toString());
 
     AccountModule.logout();
     if (this.$router.currentRoute.name !== "Home") {
@@ -218,6 +259,22 @@ export default class HSMNavbar extends Vue {
 
   get role() {
     return AccountModule.userInfo?.role;
+  }
+
+  get supportedLocales() {
+    return Object.values(UILocales);
+  }
+
+  get currentLocale() {
+    return AppModule.currentLocale;
+  }
+
+  async setCurrentLocaleAsync(locale: Locale) {
+    AppModule.showLoading(this.$t("loading.general").toString());
+
+    await AppModule.changeLocaleAsync(locale);
+
+    AppModule.hideLoading();
   }
 }
 </script>

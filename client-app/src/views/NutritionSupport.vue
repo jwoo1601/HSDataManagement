@@ -4,7 +4,7 @@
       <b-col cols="8" offset="2">
         <h2 class="font-weight-bold d-inline-block">
           <b-icon icon="person-lines-fill" class="mr-3"></b-icon>
-          영양지원과
+          {{ $t("menu.nutritionSupport") }}
         </h2>
       </b-col>
     </b-row>
@@ -16,19 +16,19 @@
             :to="{ name: 'ServiceManagement' }"
             active-class="bg-main text-white"
           >
-            서비스 관리
+            {{ $t("menu.serviceManagement") }}
           </b-list-group-item>
           <b-list-group-item
             :to="{ name: 'FoodManagement' }"
             active-class="bg-main text-white"
           >
-            음식 관리
+            {{ $t("menu.foodManagement") }}
           </b-list-group-item>
           <b-list-group-item
             :to="{ name: 'MenuManagement' }"
             active-class="bg-main text-white"
           >
-            식단 관리
+            {{ $t("menu.menuManagement") }}
           </b-list-group-item>
         </b-list-group>
       </b-col>

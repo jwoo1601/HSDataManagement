@@ -11,7 +11,7 @@ export class DefaultConfigurationProvider implements IConfiguration {
   private loadedModule?: { [key: string]: any };
 
   constructor() {
-    import(`@/config/${process.env.NODE_ENV}`)
+    import(/* webpackChunkName: "config" */ `@/config/${process.env.NODE_ENV}`)
       .then((m) => {
         this.loadedModule = m;
 

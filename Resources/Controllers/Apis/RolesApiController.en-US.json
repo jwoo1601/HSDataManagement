@@ -1,0 +1,5 @@
+{
+  "role.notFound": "No matching role found.",
+
+  "role.deleteFailure": "An error occured while deleting role data."
+}

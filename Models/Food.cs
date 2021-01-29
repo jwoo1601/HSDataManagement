@@ -16,7 +16,6 @@ namespace HyosungManagement.Models
         public string Name { get; set; }
         [MaxLength(1000)]
         public string Note { get; set; }
-        //public int CategoryID { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
         [Required, DatabaseGenerated(DatabaseGeneratedOption.Computed)]

@@ -1,20 +1,19 @@
 <template>
   <hsm-data-table
     header-icon="collection-fill"
-    header="서비스 그룹"
+    :header="$t('tab.serviceGroup')"
     :field-definitions="fieldDefinitions"
     :fetch-entries-action="fetchEntriesAsync"
     :entries="serviceGroups"
     :entries-mapper="mapTableItems"
     :labels="labels"
     :delete-entry-action="deleteEntryAsync"
-    :criteria="criteria"
     :criteria-options="criteriaOptions"
   >
-    <template #cell(note)="data">
+    <template #cell(note)="{ value, index }">
       <div class="d-flex justify-content-center text-center pt-1">
         <hsm-button
-          :id="`serviceGroup-showNote-${data.index}`"
+          :id="`serviceGroup-showNote-${index}`"
           class="mr-3"
           size="sm"
           icon="pencil-fill"
@@ -24,15 +23,15 @@
           hoverTextVariant="light"
           fontWeight="bold"
         >
-          노트
+          {{ $t("field.note") }}
         </hsm-button>
         <b-tooltip
-          v-if="data.value != null"
-          :target="`serviceGroup-showNote-${data.index}`"
+          v-if="value != null"
+          :target="`serviceGroup-showNote-${index}`"
           placement="top"
           variant="success"
         >
-          {{ data.value }}
+          {{ value }}
         </b-tooltip>
       </div>
     </template>
@@ -67,6 +66,7 @@ import App from "@/App.vue";
 import TimeSpan from "@/models/TimeSpan";
 import {
   HSMDataTableFieldDefinition,
+  HSMDataTableFilterCriteria,
   HSMDataTableItem,
   HSMDataTableLabels,
 } from "@/components/HSMDataTable.vue";
@@ -84,18 +84,21 @@ interface ServiceGroupTableItem extends HSMDataTableItem {
 })
 export default class ServiceGroup extends Vue {
   readonly fieldDefinitions: HSMDataTableFieldDefinition[] = [
-    { key: "numServices", label: "등록된 서비스", sortable: true },
-    { key: "note", label: "노트", searchable: false, hasCustomRenderer: true },
+    { key: "numServices", label: "field.numServices", sortable: true },
+    {
+      key: "note",
+      label: "field.note",
+      searchable: false,
+      hasCustomRenderer: true,
+    },
   ];
   readonly labels: HSMDataTableLabels = {
-    item: "서비스 그룹",
+    item: "label.group",
   };
-
-  criteria: "id" | "name" | "numServices" = "id";
-  criteriaOptions = [
-    { value: "id", text: "연번" },
-    { value: "name", text: "이름" },
-    { value: "numServices", text: "서비스 갯수" },
+  readonly criteriaOptions: HSMDataTableFilterCriteria[] = [
+    { value: "id", text: "field.id" },
+    { value: "name", text: "field.name" },
+    { value: "numServices", text: "field.numServices" },
   ];
 
   get serviceGroups() {

@@ -32,7 +32,7 @@
               fontWeight="bold"
               v-b-toggle.collapseTableSettings
             >
-              표 설정
+              {{ $t("action.tableSettings") }}
             </hsm-button>
             <b-collapse id="collapseTableSettings" class="mt-2">
               <b-card class="py-0">
@@ -40,7 +40,7 @@
                   <b-col cols="6">
                     <b-form-group
                       id="group-perPage"
-                      label="페이지 당 표시 갯수"
+                      :label="$t('label.perPage')"
                       label-for="input-perPage"
                     >
                       <b-form-input
@@ -61,8 +61,8 @@
             <b-form-row>
               <b-col cols="3" offset="1">
                 <b-form-select
-                  v-model="criteria"
-                  :options="criteriaOptions"
+                  v-model="filterCriteria"
+                  :options="filterCriteriaOptions"
                 ></b-form-select>
               </b-col>
               <b-col cols="7">
@@ -74,7 +74,7 @@
                     id="input-filter"
                     type="search"
                     v-model="filterString"
-                    placeholder="검색 필터"
+                    :placeholder="$t('label.searchFilter')"
                     debounce="300"
                   ></b-form-input>
                 </b-input-group>
@@ -105,7 +105,7 @@
             outlined
             sort-by="id"
             :sort-null-last="true"
-            :filter="criteria"
+            :filter="filterCriteria"
             :filter-included-fields="filteredFields"
             :filter-function="filterItems"
             :empty-html="emptyTableText"
@@ -117,9 +117,9 @@
             no-provider-filtering
             no-provider-sorting
           >
-            <template #cell(id)="data">
+            <template #cell(id)="{ value }">
               <div class="d-flex justify-content-center pt-2">
-                <b-badge variant="warning">{{ data.value }}</b-badge>
+                <b-badge variant="warning">{{ value }}</b-badge>
               </div>
             </template>
 
@@ -130,10 +130,10 @@
               <slot :name="`cell(${field.key})`" v-bind="data"></slot>
             </template>
 
-            <template v-if="showActions" #cell(action)="data">
+            <template v-if="showActions" #cell(action)="{ value, item }">
               <div class="d-flex justify-content-center pt-1">
                 <hsm-button
-                  v-if="allowEdit && data.value.edit"
+                  v-if="allowEdit && value.edit"
                   class="mr-3"
                   size="sm"
                   icon="pencil-fill"
@@ -142,12 +142,12 @@
                   hoverVariant="primary"
                   hoverTextVariant="light"
                   fontWeight="bold"
-                  @click="handleEditItemDetail(data.item)"
+                  @click="handleEditItemDetail(item)"
                 >
-                  수정
+                  {{ $t("action.edit") }}
                 </hsm-button>
                 <hsm-button
-                  v-if="allowDelete && data.value.delete"
+                  v-if="allowDelete && value.delete"
                   size="sm"
                   icon="trash-fill"
                   variant="outline-danger"
@@ -155,9 +155,9 @@
                   hoverVariant="danger"
                   hoverTextVariant="light"
                   fontWeight="bold"
-                  @click="handleDeleteItems([data.item])"
+                  @click="handleDeleteItems([item])"
                 >
-                  제거
+                  {{ $t("action.remove") }}
                 </hsm-button>
               </div>
             </template>
@@ -165,13 +165,15 @@
             <template #table-busy>
               <div class="text-center text-dark my-2">
                 <b-spinner class="align-middle mr-3"></b-spinner>
-                <strong>{{ savedLabels.data }} 로딩 중</strong>
+                <strong>
+                  {{ $t("loading.data") }}
+                </strong>
               </div>
             </template>
 
-            <template #cell()="data">
+            <template #cell()="{ value }">
               <div class="pt-1 font-weight-bold text-center">
-                {{ data.value }}
+                {{ value }}
               </div>
             </template>
           </b-table>
@@ -201,12 +203,14 @@
             spacing="1"
             @click="handleAddItem()"
           >
-            {{ savedLabels.item }} 추가
+            {{ $t("action.add") }}
           </hsm-button>
         </b-col>
         <b-col cols="5" cols-md="3" class="pr-5 d-flex justify-content-end">
+          <slot name="selectionActions"></slot>
           <hsm-button
             v-if="selectedItems.length > 0"
+            class="mr-2"
             size="sm"
             icon="dash-circle"
             variant="secondary"
@@ -215,11 +219,10 @@
             spacing="1"
             @click="handleUnselectItems()"
           >
-            선택 해제
+            {{ $t("action.unselect") }}
           </hsm-button>
           <hsm-button
             v-if="allowDelete && selectedItems.length > 0"
-            class="ml-2"
             size="sm"
             icon="patch-minus-fll"
             variant="danger"
@@ -228,7 +231,7 @@
             spacing="1"
             @click="handleDeleteItems(selectedItems)"
           >
-            선택 제거
+            {{ $t("action.removeSelected") }}
             <b-badge variant="dark">
               {{ selectedItems.length }}
             </b-badge>
@@ -268,12 +271,12 @@ export type HSMDataTableFieldDefinition = BvTableField & {
 };
 
 export interface HSMDataEntry {
-  id: number;
+  id: any;
   name: string;
 }
 
 export interface HSMDataTableItem {
-  id: number;
+  id: any;
   name: string;
   action: {
     edit: boolean;
@@ -296,12 +299,22 @@ export interface HSMDataTableLabels {
 }
 
 export const DefaultHSMDataTableLabels: HSMDataTableLabels = {
-  data: "데이터",
-  item: "아이템",
-  id: "연번",
-  name: "이름",
-  action: "동작",
+  data: "label.data",
+  item: "field.item",
+  id: "field.id",
+  name: "field.name",
+  action: "field.actions",
 };
+
+export interface HSMDataTableFilterCriteria {
+  value: string;
+  text: string;
+  filter?: (
+    item: HSMDataTableItem,
+    criteria: string,
+    filterString: string
+  ) => boolean;
+}
 
 @Component({
   components: {},
@@ -325,16 +338,16 @@ export default class HSMDataTable extends Vue {
   readonly showNumEntries!: boolean;
   @Prop({ default: DefaultHSMDataTableLabels })
   readonly labels!: HSMDataTableLabels;
-  @Prop({ default: null })
-  criteria?: string | null;
   @Prop({ default: [] })
-  readonly criteriaOptions!: Array<{ value: string; text: string }>;
+  readonly criteriaOptions!: HSMDataTableFilterCriteria[];
   @Prop({ default: 10 })
   readonly perPage!: number;
   @Prop({ default: 1 })
   readonly currentPage!: number;
   @Prop({ default: "range" })
   readonly selectMode!: string;
+  @Prop({ default: null })
+  readonly rowClass!: (item: HSMDataTableItem) => string;
 
   @Prop({ default: true })
   readonly allowSelect!: boolean;
@@ -364,6 +377,7 @@ export default class HSMDataTable extends Vue {
   isBusy = false;
   tableFields!: HSMDataTableFieldDefinition[];
   dataEntries: HSMDataTableItem[] = [];
+  filterCriteria = "id";
   filterString: string | null = "";
   filteredFields!: string[];
   targetItem: HSMDataTableItem | null = null;
@@ -385,11 +399,28 @@ export default class HSMDataTable extends Vue {
       : this.header;
   }
 
+  get filterCriteriaOptions() {
+    return this.criteriaOptions.map((opt) => ({
+      ...opt,
+      text: this.$t(opt.text),
+    }));
+  }
+
+  get currentLocale() {
+    return AppModule.currentLocale;
+  }
+
   generateFieldDefinitions() {
+    const translate = this.$t.bind(this);
+
     function mapFieldDefinition(
       raw: BvTableField & { key: string }
     ): HSMDataTableFieldDefinition {
-      return { searchable: true, ...raw };
+      return {
+        searchable: true,
+        ...raw,
+        label: translate(raw.label ?? "").toString(),
+      };
     }
 
     const defaultFields: HSMDataTableFieldDefinition[] = [
@@ -418,7 +449,12 @@ export default class HSMDataTable extends Vue {
 
     this.tableFields = defaultFields
       .map((f) => mapFieldDefinition(f))
-      .concat(this.fieldDefinitions)
+      .concat(
+        this.fieldDefinitions.map((fd) => ({
+          ...fd,
+          label: this.$t(fd.label ?? "").toString(),
+        }))
+      )
       .sort((a, b) => (a?.order ?? 2) - (b?.order ?? 2));
   }
 
@@ -449,13 +485,16 @@ export default class HSMDataTable extends Vue {
   }
 
   async fetchItemsAsync() {
+    this.isBusy = true;
     await this.fetchEntriesAsync();
     this.dataEntries = this.mapDataEntries(this.entries);
+    this.isBusy = false;
   }
 
   created() {
+    this.isBusy = true;
     this.savedLabels = { ...DefaultHSMDataTableLabels, ...this.labels };
-    AppModule.showLoading(`${this.savedLabels.data} 로딩 중`);
+    AppModule.showLoading(this.$t("loading.data").toString());
 
     this.generateFieldDefinitions();
     this.filteredFields = this.criteriaOptions.map((opt) => opt.value);
@@ -476,6 +515,11 @@ export default class HSMDataTable extends Vue {
     this.dataEntries = this.mapDataEntries(newEntries);
   }
 
+  @Watch("currentLocale")
+  onLocaleChanged() {
+    this.generateFieldDefinitions();
+  }
+
   async itemsProvider(ctx: BvTableCtxObject) {
     const startIndex = ctx.perPage * (ctx.currentPage - 1);
     const endIndex = startIndex + ctx.perPage;
@@ -490,15 +534,25 @@ export default class HSMDataTable extends Vue {
 
   filterItems(item: HSMDataTableItem, criteria: string) {
     if (this.allowSearching && this.filterString) {
-      return `${item[criteria]}`.includes(this.filterString);
+      const matchingOption = this.filterCriteriaOptions.find(
+        (opt) => opt.value === criteria
+      );
+
+      return matchingOption?.filter
+        ? matchingOption.filter(item, criteria, this.filterString)
+        : `${item[criteria]}`.includes(this.filterString);
     }
 
     return true;
   }
 
-  tableRowClass(item: any, type: string) {
+  tableRowClass(item: HSMDataTableItem, type: string) {
     if (!item || type !== "row") {
       return;
+    }
+
+    if (this.rowClass) {
+      return this.rowClass(item);
     }
 
     return;
@@ -509,11 +563,11 @@ export default class HSMDataTable extends Vue {
   }
 
   get emptyTableText() {
-    return `<strong>표시할 ${this.savedLabels.data}가 없습니다.</strong>`;
+    return `<strong>${this.$t("message.tableEmpty")}</strong>`;
   }
 
   get emptyFilteredTableText() {
-    return `<strong>조건에 맞는 ${this.savedLabels.data}가 없습니다.</strong>`;
+    return `<strong>${this.$t("message.tableNoMatch")}</strong>`;
   }
 
   async handleReloadItemsAsync() {
@@ -540,12 +594,12 @@ export default class HSMDataTable extends Vue {
   async handleDeleteItems(items: HSMDataTableItem[]) {
     if (this.deleteEntryAction) {
       const confirmed = await this.$hsmConfirmDialog(
-        `${this.savedLabels.item} 제거`,
-        `정말로 해당 ${this.savedLabels.item}(들)을 제거하시겠습니까?`
+        this.$t("action.remove").toString(),
+        `정말로 해당 항목(들)을 제거하시겠습니까?`
       );
 
       if (confirmed) {
-        AppModule.showLoading("제거 중");
+        AppModule.showLoading(this.$t("loading.processing").toString());
 
         for (const item of items) {
           this.deleteEntry(item.raw);

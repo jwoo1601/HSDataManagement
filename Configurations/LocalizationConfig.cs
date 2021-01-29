@@ -1,6 +1,7 @@
 ﻿using HyosungManagement.InputModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace HyosungManagement.Configurations
 {
-    public class LocalizationConfig : IServiceConfig
+    public class LocalizationConfig : IConfigManager
     {
-        public static readonly string DefaultCulture = "ko-KR";
+        public static readonly string DefaultCulture = "en-US";
         public static readonly string[] DefaultSupportedCultures
-            = new[] { "en-US", "ko-KR" };
+            = new[] { "en-US" };
 
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment Environment { get; }

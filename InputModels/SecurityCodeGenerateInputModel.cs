@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HyosungManagement.InputModels
 {
-    public class SecurityCodeGenerateInputModel : IUserEntityInputModel<SecurityCode>
+    public class SecurityCodeGenerateInputModel : IUserDbEntityInputModel<SecurityCode>
     {
         public static readonly int DefaultAgeInSeconds = 3600 * 24; // 1 day
 

@@ -1,14 +1,13 @@
 <template>
   <hsm-data-table
     header-icon="egg-fried"
-    header="음식"
+    :header="$t('tab.food')"
     :field-definitions="fieldDefinitions"
     :fetch-entries-action="fetchEntriesAsync"
     :entries="foods"
     :entries-mapper="mapTableItems"
     :labels="labels"
     :delete-entry-action="deleteEntryAsync"
-    :criteria="criteria"
     :criteria-options="criteriaOptions"
   >
     <template #cell(note)="data">
@@ -24,7 +23,7 @@
           hoverTextVariant="light"
           fontWeight="bold"
         >
-          노트
+          {{ $t("field.note") }}
         </hsm-button>
         <b-tooltip
           v-if="data.value !== null"
@@ -56,15 +55,15 @@
           hoverTextVariant="light"
           fontWeight="bold"
         >
-          재료
+          {{ $t("field.ingredient") }}
         </hsm-button>
         <b-tooltip
-          v-if="value !== null"
+          v-if="value.length > 0"
           :target="`food-ingredients-${index}`"
           placement="top"
           variant="submain"
         >
-          {{ value }}
+          {{ value.map((ig) => `${ig.name} (${ig.origin})`).join(", ") }}
         </b-tooltip>
       </div>
     </template>
@@ -72,7 +71,7 @@
     <template #detail="{ visible, item, notify, close }">
       <hsm-food-detail
         v-show="visible"
-        :service="item"
+        :food="item"
         @save="notify"
         @delete="notify"
         @close="close"
@@ -97,15 +96,16 @@ import {
 import App from "@/App.vue";
 import {
   HSMDataTableFieldDefinition,
+  HSMDataTableFilterCriteria,
   HSMDataTableItem,
   HSMDataTableLabels,
 } from "@/components/HSMDataTable.vue";
-import HSMFoodDetail from "@/components/HSMServiceDetail.vue";
+import HSMFoodDetail from "@/components/HSMFoodDetail.vue";
 
 interface FoodTableItem extends HSMDataTableItem {
   note: string | null;
   category: HSMFoodCategory | null;
-  ingredients: string | null;
+  ingredients: HSMFoodIngredient[];
 }
 
 @Component({
@@ -115,31 +115,34 @@ interface FoodTableItem extends HSMDataTableItem {
 })
 export default class Food extends Vue {
   readonly fieldDefinitions: HSMDataTableFieldDefinition[] = [
-    { key: "note", label: "노트", searchable: false, hasCustomRenderer: true },
     {
       key: "category",
-      label: "카테고리",
+      label: "field.category",
       sortable: true,
       formatter: this.formatFoodCategory,
       hasCustomRenderer: true,
     },
     {
       key: "ingredients",
-      label: "재료",
+      label: "field.ingredient",
+      searchable: false,
+      hasCustomRenderer: true,
+    },
+    {
+      key: "note",
+      label: "field.note",
       searchable: false,
       hasCustomRenderer: true,
     },
   ];
   readonly labels: HSMDataTableLabels = {
-    item: "음식",
+    item: "field.food",
   };
-
-  criteria: "id" | "name" | "category" | "numIngredients" = "id";
-  criteriaOptions = [
-    { value: "id", text: "연번" },
-    { value: "name", text: "이름" },
-    { value: "category", text: "카테고리" },
-    { value: "numIngredients", text: "재료 수" },
+  readonly criteriaOptions: HSMDataTableFilterCriteria[] = [
+    { value: "id", text: "field.id" },
+    { value: "name", text: "field.name" },
+    { value: "category", text: "field.category" },
+    { value: "numIngredients", text: "field.numIngredients" },
   ];
 
   get foods() {
@@ -160,8 +163,7 @@ export default class Food extends Vue {
       name: food.name,
       note: food.note ?? null,
       category: food.category ?? null,
-      ingredients:
-        food.ingredients.length > 0 ? food.ingredients.join(", ") : null,
+      ingredients: food.ingredients,
       action: {
         edit: true,
         delete: true,

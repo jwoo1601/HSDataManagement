@@ -15,7 +15,7 @@ console.log(":: CONFIG ::");
 console.log(JSON.stringify(configuration, null, "\t"));
 
 const client = axios.create({
-  baseURL: configuration.getValue("hsm.baseUrl") || "http://localhost:5000",
+  // baseURL: configuration.getValue("hsm.baseUrl") || "https://www.hsadmin.net",
   validateStatus: function (status: number) {
     return status !== 401;
   },

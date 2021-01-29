@@ -1,8 +1,12 @@
 <template>
-  <hsm-error
-    title="404 Page Not Found"
-    message="요청하신 페이지를 찾을 수 없습니다."
-  ></hsm-error>
+  <b-row>
+    <b-col cols="12" offset="0" md="10" offset-md="1" lg="8" offset-lg="2">
+      <hsm-error
+        :title="$t('title.notFound')"
+        :message="$t('message.notFound')"
+      ></hsm-error>
+    </b-col>
+  </b-row>
 </template>
 
 <script lang="ts">
@@ -16,4 +20,5 @@ import { BRow, BCol, BAlert } from "bootstrap-vue";
 export default class NotFound extends Vue {}
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped></style>
+>

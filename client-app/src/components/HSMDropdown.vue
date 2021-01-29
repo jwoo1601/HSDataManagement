@@ -15,7 +15,7 @@
         :variant="finalIconVariant"
         :class="finalIconClass"
       ></b-icon>
-      <span :class="finalTextClass">{{ text }}</span>
+      <span v-if="text.length > 0" :class="finalTextClass">{{ text }}</span>
     </template>
 
     <template v-slot:default>
@@ -104,4 +104,5 @@ export default class HSMButton extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped></style>
+>

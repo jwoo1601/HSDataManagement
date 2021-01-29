@@ -406,7 +406,15 @@ namespace HyosungManagement.Controllers
                 var result = await UserManager.ConfirmEmailAsync(userInstance, decodedToken);
                 if (result.Succeeded)
                 {
-                    await UserManager.AddToRoleAsync(userInstance, "User");
+                    if (userInstance.Email == Configuration["Master:DefaultEmailAddress"])
+                    {
+                        await UserManager.AddToRoleAsync(userInstance, "User");
+                    }
+                    else
+                    {
+                        await UserManager.AddToRoleAsync(userInstance, "User");
+                    }
+
                     userInstance.IsActive = true;
                     await UserManager.UpdateAsync(userInstance);
 

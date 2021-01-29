@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -27,9 +28,6 @@ namespace HyosungManagement.Data
         public DbSet<MealFoodAssignment> MealFoodAssignments { get; set; }
         public DbSet<MealPackage> MealPackages { get; set; }
         public DbSet<MealPackageAssignment> MealPackageAssignments { get; set; }
-        //public DbSet<BreakfastAssignment> BreakfastAssignments { get; set; }
-        //public DbSet<LunchAssignment> LunchAssignments { get; set; }
-        //public DbSet<DinnerAssignment> DinnerAssignments { get; set; }
         public DbSet<OperationLog> OperationLogs { get; set; }
         public DbSet<PreservationLog> PreservationLogs { get; set; }
         public DbSet<DailyMenu> DailyMenus { get; set; }
@@ -37,10 +35,31 @@ namespace HyosungManagement.Data
         public DbSet<EmployeeRole> EmployeeRoles { get; set; }
         public DbSet<Report> Reports { get; set; }
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<PostCategory> PostCategories { get; set; }
+        public DbSet<PostComment> PostComments { get; set; }
+        public DbSet<CommentReply> CommentReplies { get; set; }
+
+        private readonly IConfiguration configuration;
+
+        public AppDbContext(
+            DbContextOptions<AppDbContext> options,
+            IConfiguration configuration
+        )
             : base(options)
         {
+            this.configuration = configuration;
+        }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder builder)
+        {
+            base.OnConfiguring(builder);
+
+            builder
+                .UseSqlServer(
+                    configuration.GetConnectionString("Default")
+                )
+                .UseLazyLoadingProxies();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,17 +71,21 @@ namespace HyosungManagement.Data
                     .HasQueryFilter(c => !c.IsDeleted);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<CustomerTag>(e => {
                 e.ToTable("CustomerTag");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<CustomerTagAssignment>().ToTable("CustomerTagAssignment");
             modelBuilder.Entity<Service>(e => {
@@ -72,17 +95,21 @@ namespace HyosungManagement.Data
                     .OnDelete(DeleteBehavior.SetNull);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<ServiceGroup>(e => {
                 e.ToTable("ServiceGroup");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<CustomerServiceAssignment>(e => {
                 e.ToTable("CustomerServiceAssignment")
@@ -96,17 +123,21 @@ namespace HyosungManagement.Data
                     .OnDelete(DeleteBehavior.SetNull);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<FoodCategory>(e => {
                 e.ToTable("FoodCategory");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<FoodIngredient>(e => {
                 e.ToTable("FoodIngredient")
@@ -115,17 +146,21 @@ namespace HyosungManagement.Data
                     .OnDelete(DeleteBehavior.SetNull);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<FoodIngredientCategory>(e => {
                 e.ToTable("FoodIngredientCategory");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<FoodIngredientAssignment>().ToTable("FoodIngredientAssignment");
             modelBuilder.Entity<Meal>(e => {
@@ -134,18 +169,22 @@ namespace HyosungManagement.Data
                     .HasConversion(new EnumToStringConverter<MealCategory>());
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<MealFoodAssignment>().ToTable("MealFoodAssignment");
             modelBuilder.Entity<MealPackage>(e => {
                 e.ToTable("MealPackage");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<MealPackageAssignment>(e => {
                 e.ToTable("MealPackageAssignment");
@@ -169,9 +208,11 @@ namespace HyosungManagement.Data
                     .HasConversion(new EnumToStringConverter<MealType>());
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<PreservationLog>(e => {
                 e.ToTable("PreservationLog");
@@ -183,9 +224,11 @@ namespace HyosungManagement.Data
                     .HasConversion(new EnumToStringConverter<MealCategory>());
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<DailyMenu>(e => {
                 e.ToTable("DailyMenu")
@@ -194,9 +237,11 @@ namespace HyosungManagement.Data
                     .OnDelete(DeleteBehavior.SetNull);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<Employee>(e => {
                 e.ToTable("Employee")
@@ -205,17 +250,21 @@ namespace HyosungManagement.Data
                     .OnDelete(DeleteBehavior.SetNull);
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<EmployeeRole>(e => {
                 e.ToTable("EmployeeRole");
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
             modelBuilder.Entity<Report>(e => {
                 e.ToTable("Report");
@@ -224,9 +273,88 @@ namespace HyosungManagement.Data
                     .HasConversion(new EnumToStringConverter<ReportType>());
 
                 e.Property(entity => entity.CreatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
                 e.Property(entity => entity.LastUpdatedAt)
-                    .HasDefaultValueSql("GETUTCDATE()");
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
+            });
+
+            modelBuilder.Entity<Post>(e => {
+                e.ToTable("Post");
+
+                e.OwnsMany(p => p.Likes, l => {
+                    l.WithOwner().HasForeignKey(l => l.OwnerID);
+                    l.HasKey(l => new { l.LikedBy, l.OwnerID });
+                });
+
+                e.HasOne(e => e.Category)
+                    .WithMany(e => e.Posts)
+                    .OnDelete(DeleteBehavior.SetNull);
+
+                e.HasQueryFilter(e => !e.IsDeleted);
+
+                e.Property(entity => entity.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+                e.Property(entity => entity.LastUpdatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
+            });
+            modelBuilder.Entity<PostCategory>(e => {
+                e.ToTable("PostCategory");
+
+                e.Property(entity => entity.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+                e.Property(entity => entity.LastUpdatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
+            });
+            modelBuilder.Entity<PostComment>(e => {
+                e.ToTable("PostComment");
+
+                e.OwnsMany(c => c.Likes, l => {
+                    l.WithOwner().HasForeignKey(l => l.OwnerID);
+                    l.HasKey(l => new { l.LikedBy, l.OwnerID });
+                });
+
+                e.HasOne(e => e.AssignedPost)
+                    .WithMany(e => e.Comments)
+                    .HasForeignKey(e => e.PostID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasQueryFilter(e => !e.IsDeleted);
+
+                e.Property(entity => entity.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+                e.Property(entity => entity.LastUpdatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
+            });
+
+            modelBuilder.Entity<CommentReply>(e => {
+                e.ToTable("CommentReply");
+
+                e.OwnsMany(c => c.Likes, l => {
+                    l.WithOwner().HasForeignKey(l => l.OwnerID);
+                    l.HasKey(l => new { l.LikedBy, l.OwnerID });
+                });
+
+                e.HasOne(e => e.AssignedComment)
+                    .WithMany(e => e.Replies)
+                    .HasForeignKey(e => e.CommentID)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                e.HasQueryFilter(e => !e.IsDeleted);
+
+                e.Property(entity => entity.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAdd();
+                e.Property(entity => entity.LastUpdatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()")
+                    .ValueGeneratedOnAddOrUpdate();
             });
 
             #region Customer - CustomerTag Many-to-Many

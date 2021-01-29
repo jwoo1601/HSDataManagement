@@ -16,7 +16,16 @@ namespace HyosungManagement.Models
     public class ValidationErrorObjectResult : BadRequestObjectResult
     {
         public ValidationErrorObjectResult(ModelStateDictionary modelState)
-            : base(new { ErrorType = ResponseErrorType.Validation, Errors = modelState })
+            : base(
+                  new
+                  {
+                      ErrorType = ResponseErrorType.Validation,
+                      Errors = modelState.ToDictionary(
+                          p => p.Key,
+                          p => p.Value.Errors.Select(e => e.ErrorMessage)
+                      )
+                  }
+              )
         {
 
         }

@@ -24,8 +24,9 @@
             fontWeight="bold"
             class="mr-3"
             @click="$router.back()"
-            >이전 페이지로</hsm-button
           >
+            {{ $t("action.back") }}
+          </hsm-button>
 
           <hsm-button
             icon="house-door-fill"
@@ -35,8 +36,9 @@
             hoverTextVariant="light"
             fontWeight="bold"
             @click="$router.push('/')"
-            >홈으로</hsm-button
           >
+            {{ $t("action.home") }}
+          </hsm-button>
         </div>
       </b-col>
     </b-row>
@@ -60,4 +62,5 @@ export default class HSMError extends Vue {
 }
 </script>
 
-<style lang="scss" scoped></style>>
+<style lang="scss" scoped></style>
+>

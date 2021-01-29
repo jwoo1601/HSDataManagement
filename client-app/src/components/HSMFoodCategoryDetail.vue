@@ -27,7 +27,7 @@
             <b-col cols="12" md="10" lg="8" xl="6">
               <b-form-group
                 id="group-name"
-                label="음식 카테고리명"
+                label="카테고리 이름"
                 label-for="input-name"
               >
                 <b-form-input
@@ -150,7 +150,7 @@
         v-if="foodCategory"
         title="등록된 음식 목록"
         :visible.sync="showRegisteredFoods"
-        :services="registeredFoods"
+        :foods="registeredFoods"
       ></hsm-food-viewer>
     </div>
   </transition>

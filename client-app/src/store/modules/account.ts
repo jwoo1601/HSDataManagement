@@ -16,6 +16,7 @@ import {
   OAuthTokenResponse,
 } from "@/models/api/OAuthToken";
 import IQueryService from "@/services/queryService";
+import secureStorage from "@/store/secureStorage";
 
 export interface AccountState {
   authenticated: boolean;
@@ -27,13 +28,14 @@ export interface AccountState {
 export interface AccountActionResult {
   success: boolean;
   errorMessage?: string;
+  payload?: string;
 }
 
 @Module({
   dynamic: true,
   store,
   name: "account",
-  preserveState: true,
+  preserveState: secureStorage.getAllKeys().includes("hsm_store_cache"),
 })
 class Account extends VuexModule implements AccountState {
   public authenticated = false;
@@ -95,17 +97,17 @@ class Account extends VuexModule implements AccountState {
 
         result.success = true;
       } else {
-        result.errorMessage =
-          "로그인 중에 에러가 발생했습니다. 다시 시도해 주세요.";
+        result.errorMessage = "error.userinfoUnavailable";
 
         this.logout();
       }
     } else {
       const errorResponse = tokenResult.response as OAuthTokenErrorResponse;
       if (errorResponse.error === "invalid_grant") {
-        result.errorMessage = "아이디 또는 비밀번호가 일치하지 않습니다.";
+        result.errorMessage = "error.incorrectCredentials";
       } else {
-        result.errorMessage = `로그인 중에 에러가 발생했습니다. (${errorResponse.error})`;
+        result.errorMessage = "error.loginUnknown";
+        result.payload = errorResponse.error;
       }
 
       this.logout();

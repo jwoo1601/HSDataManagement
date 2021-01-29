@@ -1,3 +1,14 @@
 {
+  "user.notFound": "No matching user found.",
+  "user.notOnLockout": "User is not on lockout.",
+  "user.emailAlreadyConfirmed": "User has already verified email",
 
+  "role.notFound": "No matchig role found.",
+
+  "user.activateFailure": "An error occured while activating user.",
+  "user.inactivateFailure": "An error occured while inactivating user.",
+  "user.endLockoutFailure": "An error occured while ending lockout of user.",
+  "user.markEmailConfirmedFailure": "An error occured while marking email confirmed for user.",
+  "user.deleteFailure": "An error occured while deleting user data.",
+  "user.setUserRoleFailure": "An error occured while setting role of user."
 }

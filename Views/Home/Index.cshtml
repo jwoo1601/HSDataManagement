@@ -1,8 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_SpaLayout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div id="app"></div>
+
+@section Scripts {
+    <script src="/js/chunk-vendors.1abe7406.js"></script>
+    <script src="/js/app.6ebc7933.js"></script>
+}

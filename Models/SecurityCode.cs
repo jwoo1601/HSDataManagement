@@ -16,6 +16,7 @@ namespace HyosungManagement.Models
         Persistent
     }
 
+    [JsonConverter(typeof(HSMJsonConverter))]
     public class SecurityCode
     {
         public int ID { get; set; }
@@ -47,5 +48,33 @@ namespace HyosungManagement.Models
 
 
         public virtual ICollection<HSMUser> Users { get; set; }
+
+
+        public class HSMJsonConverter : JsonConverter<SecurityCode>
+        {
+            public override SecurityCode ReadJson(JsonReader reader, Type objectType, SecurityCode existingValue, bool hasExistingValue, JsonSerializer serializer)
+            {
+                var code = new SecurityCode();
+                serializer.Populate(reader, code);
+
+                return code;
+            }
+
+            public override void WriteJson(JsonWriter writer, SecurityCode value, JsonSerializer serializer)
+            {
+                var mappedCode = new
+                {
+                    value.ID,
+                    value.CodeType,
+                    value.Value,
+                    value.IsValid,
+                    value.GeneratedAt,
+                    value.ExpiresAt
+                };
+
+                serializer.NullValueHandling = NullValueHandling.Ignore;
+                serializer.Serialize(writer, mappedCode);
+            }
+        }
     }
 }

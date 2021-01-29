@@ -1,0 +1,14 @@
+﻿{
+  "user.notFound": "해당 회원을 찾을 수 없습니다.",
+  "user.notOnLockout": "해당 회원의 계정이 이미 잠겨있지 않습니다.",
+  "user.emailAlreadyConfirmed": "해당 회원의 이메일이 이미 인증되어 있습니다.",
+
+  "role.notFound": "해당 권한을 찾을 수 없습니다.",
+
+  "user.activateFailure": "회원을 정지 해제시키는 중에 에러가 발생했습니다.",
+  "user.inactivateFailure": "회원을 정지시키는 중에 에러가 발생했습니다.",
+  "user.endLockoutFailure": "회원의 계정 잠금을 해제하는 중에 에러가 발생했습니다.",
+  "user.markEmailConfirmedFailure": "회원의 이메일을 인증됨 상태로 설정하는 중에 에러가 발생했습니다.",
+  "user.deleteFailure": "회원 데이터를 제거하는 중에 에러가 발생했습니다.",
+  "user.setUserRoleFailure": "해당 회원의 권한을 설정하는 중에 에러가 발생했습니다."
+}

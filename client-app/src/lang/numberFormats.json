@@ -1,0 +1,36 @@
+{
+  "en": {
+    "hour": {
+      "style": "unit",
+      "unit": "hour",
+      "unitDisplay": "short"
+    },
+    "minute": {
+      "style": "unit",
+      "unit": "minute",
+      "unitDisplay": "short"
+    },
+    "second": {
+      "style": "unit",
+      "unit": "second",
+      "unitDisplay": "short"
+    }
+  },
+  "ko-KR": {
+    "hour": {
+      "style": "unit",
+      "unit": "hour",
+      "unitDisplay": "short"
+    },
+    "minute": {
+      "style": "unit",
+      "unit": "minute",
+      "unitDisplay": "short"
+    },
+    "second": {
+      "style": "unit",
+      "unit": "second",
+      "unitDisplay": "short"
+    }
+  }
+}

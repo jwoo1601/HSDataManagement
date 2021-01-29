@@ -4,10 +4,10 @@
       <b-col>
         <b-card no-body>
           <b-tabs card v-model="tabIndex">
-            <b-tab title="서비스" href="#service">
+            <b-tab :title="$t('tab.service')" href="#service">
               <service-view ref="service"></service-view>
             </b-tab>
-            <b-tab title="서비스 그룹" href="#service-group">
+            <b-tab :title="$t('tab.serviceGroup')" href="#service-group">
               <service-group-view ref="serviceGroup"></service-group-view>
             </b-tab>
           </b-tabs>

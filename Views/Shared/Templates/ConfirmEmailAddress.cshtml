@@ -6,20 +6,14 @@
 @{
     Layout = "_EmailLayout";
 
-    string confirmEmailUrl = null;
-    if (HostEnvironment.IsDevelopment())
-    {
-        confirmEmailUrl = Url.RouteUrl(
-            "ConfirmEmail",
-            new { confirmation_code = Model.ConfirmationCode },
-            "http",
-            $"{Configuration["Host:BaseUrl"]}:{Configuration["Host:Port"]}"
-        );
-    }
-    else
-    {
-        confirmEmailUrl = Url.RouteUrl("ConfirmEmail", new { confirmation_code = Model.ConfirmationCode });
-    }
+    var confirmEmailUrl = Url.RouteUrl(
+        "ConfirmEmail",
+        new { confirmation_code = Model.ConfirmationCode },
+        HostEnvironment.IsDevelopment() ? "http" : "https",
+        HostEnvironment.IsDevelopment() ?
+            $"{Configuration["Host:BaseUrl"]}:{Configuration["Host:Port"]}" :
+            Configuration["Host:BaseUrl"]
+    );
 }
 
 <div style="color: #6c757d; font-size: 80%;">

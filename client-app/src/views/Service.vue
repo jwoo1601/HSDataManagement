@@ -1,20 +1,19 @@
 <template>
   <hsm-data-table
     header-icon="gear-fill"
-    header="서비스"
+    :header="$t('tab.service')"
     :field-definitions="fieldDefinitions"
     :fetch-entries-action="fetchEntriesAsync"
     :entries="services"
     :entries-mapper="mapTableItems"
     :labels="labels"
     :delete-entry-action="deleteEntryAsync"
-    :criteria="criteria"
     :criteria-options="criteriaOptions"
   >
-    <template #cell(note)="data">
+    <template #cell(note)="{ value, index }">
       <div class="d-flex justify-content-center text-center pt-1">
         <hsm-button
-          :id="`service-showNote-${data.index}`"
+          :id="`service-showNote-${index}`"
           class="mr-3"
           size="sm"
           icon="pencil-fill"
@@ -24,15 +23,15 @@
           hoverTextVariant="light"
           fontWeight="bold"
         >
-          노트
+          {{ $t("field.note") }}
         </hsm-button>
         <b-tooltip
-          v-if="data.value"
-          :target="`service-showNote-${data.index}`"
+          v-if="value !== null"
+          :target="`service-showNote-${index}`"
           placement="top"
           variant="success"
         >
-          {{ data.value }}
+          {{ value }}
         </b-tooltip>
       </div>
     </template>
@@ -72,6 +71,7 @@ import App from "@/App.vue";
 import TimeSpan from "@/models/TimeSpan";
 import {
   HSMDataTableFieldDefinition,
+  HSMDataTableFilterCriteria,
   HSMDataTableItem,
   HSMDataTableLabels,
 } from "@/components/HSMDataTable.vue";
@@ -92,29 +92,32 @@ export default class Service extends Vue {
   readonly fieldDefinitions: HSMDataTableFieldDefinition[] = [
     {
       key: "duration",
-      label: "시간",
+      label: "field.duration",
       sortable: true,
       formatter: this.formatTimeSpan,
     },
-    { key: "note", label: "노트", searchable: false, hasCustomRenderer: true },
+    {
+      key: "note",
+      label: "field.note",
+      searchable: false,
+      hasCustomRenderer: true,
+    },
     {
       key: "group",
-      label: "서비스 그룹",
+      label: "field.serviceGroup",
       sortable: true,
       formatter: this.formatServiceGroup,
       hasCustomRenderer: true,
     },
   ];
   readonly labels: HSMDataTableLabels = {
-    item: "서비스",
+    item: "label.service",
   };
-
-  criteria: "id" | "name" | "duration" | "group" = "id";
-  criteriaOptions = [
-    { value: "id", text: "연번" },
-    { value: "name", text: "이름" },
-    { value: "duration", text: "시간" },
-    { value: "group", text: "서비스 그룹" },
+  readonly criteriaOptions: HSMDataTableFilterCriteria[] = [
+    { value: "id", text: "field.id" },
+    { value: "name", text: "field.name" },
+    { value: "duration", text: "field.duration" },
+    { value: "group", text: "field.serviceGroup" },
   ];
 
   get services() {
@@ -145,7 +148,7 @@ export default class Service extends Vue {
   }
 
   formatTimeSpan(timeSpan: TimeSpan | null, key: string, item: any) {
-    return timeSpan ? `${timeSpan.totalMinutes} 분` : "---";
+    return timeSpan ? this.$n(timeSpan.totalMinutes, "minute") : "---";
   }
 
   formatServiceGroup(

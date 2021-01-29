@@ -56,12 +56,12 @@
           재료
         </hsm-button>
         <b-tooltip
-          v-if="value !== null"
+          v-if="value.length > 0"
           :target="`view-food-ingredients-${index}`"
           placement="top"
           variant="submain"
         >
-          {{ value }}
+          {{ value.join(", ") }}
         </b-tooltip>
       </div>
     </template>
@@ -91,7 +91,7 @@ import HSMDataViewer from "./HSMDataViewer.vue";
 
 interface FoodViewTableItem extends HSMDataTableItem {
   note: string | null;
-  ingredients: string | null;
+  ingredients: HSMFoodIngredient[];
 }
 
 @Component({
@@ -118,11 +118,10 @@ export default class HSMFoodViewer extends Vue {
       hasCustomRenderer: true,
     },
   ];
-  foodCriteria: "id" | "name" | "category" | "numIngredients" = "id";
+  foodCriteria: "id" | "name" | "numIngredients" = "id";
   foodCriteriaOptions = [
     { value: "id", text: "연번" },
     { value: "name", text: "이름" },
-    { value: "category", text: "카테고리" },
     { value: "numIngredients", text: "재료 수" },
   ];
 
@@ -139,10 +138,9 @@ export default class HSMFoodViewer extends Vue {
       id: food.id,
       name: food.name,
       note: food.note ?? null,
-      ingredients:
-        food.ingredients.length > 0 ? food.ingredients.join(", ") : null,
+      ingredients: food.ingredients,
       action: {
-        edit: true,
+        edit: false,
         delete: true,
       },
       raw: food,
